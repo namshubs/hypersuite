@@ -1,0 +1,31 @@
+name: Feature request
+description: An idea for something hypersuite should do, or do differently.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        English or German are both fine. For open questions, Discussions may be the better place.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The situation and the goal — what is hard or impossible today?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      description: How you imagine it working. Optional.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where
+      options:
+        - Scan
+        - Sort
+        - Outbird
+        - Command line
+        - Documentation
+        - Other

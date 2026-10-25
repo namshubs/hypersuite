@@ -1,0 +1,56 @@
+name: Bug report
+description: Something doesn't work as described.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! English or German are both fine.
+        For security problems, please don't use this form — see SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: hypersuite version
+      description: "`hypersuite --version`, or the About page in the launcher."
+      placeholder: "hypersuite 2.1.2 (hyperindex 0.103.1, hyperfiler 0.18.1, outbird 1.0.0)"
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: "Windows 11 24H2"
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where
+      options:
+        - Launcher / installation / bundled tools
+        - Scan
+        - Sort
+        - Outbird
+        - Command line
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Output under "Show details"
+      description: Paste the log, or the command-line output. Remove file names you consider private.
+      render: text
+  - type: textarea
+    id: more
+    attributes:
+      label: Anything else
+      description: Screenshots, size of the data (number of files, drives), cloud folders, network drives …
