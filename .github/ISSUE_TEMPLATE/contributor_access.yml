@@ -1,23 +1,40 @@
 name: Contributor access
-description: Ask for access to the development server to review the code or contribute.
+description: Ask for access to the source code on the development server.
 title: "Contributor access"
 body:
   - type: markdown
     attributes:
       value: |
-        The source code lives on a self-hosted Git server, not here. Tell us a bit about yourself
-        and what you'd like to do; if it's a good fit, you'll get an invitation. English or German are both fine.
+        The source code lives on a self-hosted Git server, not here. Please read
+        [CONTRIBUTING.md](https://github.com/namshubs/hypersuite/blob/main/.github/CONTRIBUTING.md) first:
+        access requires all four points below and an interactive onboarding. English or German are both fine.
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: I am a human, writing this myself, and I am willing to take part in a live onboarding conversation.
+          required: true
+        - label: I don't work for, contract for or represent a Big Tech platform company.
+          required: true
   - type: textarea
     id: about
     attributes:
       label: About you
-      description: Your background, and where we can see some of your work (optional).
+      description: Your background, with a link to your LinkedIn (or similar) profile, or to similar projects you've taken part in.
     validations:
       required: true
   - type: textarea
-    id: interest
+    id: rights
     attributes:
-      label: Your interest
-      description: Review, a specific feature or fix, a platform, documentation — whatever brings you here.
+      label: Privacy and user rights
+      description: Links to your contributions to privacy-related projects, or to what you've written or said for users' rights against Big Tech.
+    validations:
+      required: true
+  - type: textarea
+    id: agenda
+    attributes:
+      label: Your technical improvement agenda
+      description: What you want to improve in hypersuite (a feature, a fix, performance, Linux support, documentation) and roughly how.
     validations:
       required: true

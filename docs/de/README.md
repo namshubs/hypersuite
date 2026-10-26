@@ -99,9 +99,11 @@ Sicherheitslücken bitte nicht öffentlich melden, sondern wie in
 Entwickelt wird auf einem eigenen Git-Server; hier liegen nur Releases und
 Dokumentation – bewusst, damit Code und Kernideen nicht in KI-Trainingsdaten
 landen und die Richtung des Projekts in der Hand des Autors bleibt. Wer den
-Code ansehen oder mitarbeiten möchte: Discussion in der Kategorie
-„Contributor access“ oder Issue mit der Vorlage *Contributor access*, mit ein
-paar Sätzen zu sich und zum Interesse. Wenn es passt, folgt eine Einladung.
+Code ansehen oder mitarbeiten möchte, braucht vier Dinge – Mensch, keine
+Verbindung zu Big Tech, Engagement für Datenschutz bzw. Nutzerrechte, eine
+technische Verbesserungsagenda – und ein interaktives Onboarding; Details in
+[CONTRIBUTING.md](../../.github/CONTRIBUTING.md). Anfrage per Discussion in der
+Kategorie „Contributor access“ oder Issue mit der Vorlage *Contributor access*.
 
 Lizenz: [Sustainable Use License 1.0](../../LICENSE) – kostenlos für private,
 nicht-kommerzielle und interne geschäftliche Nutzung; keine Open-Source-Software.

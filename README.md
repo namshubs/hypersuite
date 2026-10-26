@@ -63,13 +63,16 @@ This is deliberate: it keeps the code base and its core concepts out of
 large-scale AI training pipelines, and it keeps the project's direction in
 the author's hands.
 
-**Want to contribute or review the code?** Feedback is welcome, and so are
-developers who share the project's approach. Open a
-[Discussion](https://github.com/namshubs/hypersuite/discussions) in the
-"Contributor access" category (or an issue using the
+**Want to contribute or review the code?** Feedback is always welcome. Access
+to the source code is for people who share the project's goal — helping users
+leave Outlook, clean up Windows and get ready for Linux. It requires four
+things (a human, no ties to Big Tech, a record for user rights, a technical
+improvement agenda) and an interactive onboarding; see
+[CONTRIBUTING.md](.github/CONTRIBUTING.md). Then ask in the "Contributor
+access" [Discussion](https://github.com/namshubs/hypersuite/discussions)
+category or with the
 [Contributor access](https://github.com/namshubs/hypersuite/issues/new?template=contributor_access.yml)
-form) with a short note about yourself and your interest. If it's a good fit,
-you'll get an invitation to the development server.
+issue form.
 
 ## License
 
