@@ -12,7 +12,7 @@ body:
     attributes:
       label: hypersuite version
       description: "`hypersuite --version`, or the About page in the launcher."
-      placeholder: "hypersuite 2.1.2 (hyperindex 0.103.1, hyperfiler 0.18.1, outbird 1.0.0)"
+      placeholder: "hypersuite 2.1.3 (hyperindex 0.103.1, hyperfiler 0.18.2, outbird 1.0.0)"
     validations:
       required: true
   - type: input

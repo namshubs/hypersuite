@@ -1,6 +1,6 @@
 # hypersuite documentation
 
-For hypersuite 2.1. [Deutsch: Kurzanleitung](de/README.md)
+For hypersuite 2.1. Deutsch: [Handbuch](de/handbuch.md) ([PDF](de/hypersuite-handbuch.pdf)) · [Kurzanleitung](de/README.md)
 
 1. [Getting started](getting-started.md) — requirements, download and check, first start, update, uninstall
 2. [Scan](scan.md) — the index, the database, duplicates, photos, continuing an interrupted scan

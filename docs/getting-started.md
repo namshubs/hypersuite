@@ -40,9 +40,8 @@ Check the signature:
 Get-AuthenticodeSignature .\hypersuite.exe | Format-List Status, SignerCertificate
 ```
 
-The signer is `CN=Tasc Ltd. hypersuite Code Signing, O=Tasc Ltd., L=Baar,
-S=Zug, C=CH` with thumbprint `D433147FD86AB27AAE46F4CDB9CD8FB61397F33F`
-(valid until 2031-10-19). Until your computer trusts this certificate, the
+The signer is `CN=hypersuite (github.com/namshubs/hypersuite)` with thumbprint
+`C7EC126C59C0081863A4467F960C367BA1630C0D` (valid until 2031-10-25). Until your computer trusts this certificate, the
 status reads `UnknownError` — the signature is intact, Windows just doesn't
 know the publisher.
 
@@ -51,7 +50,7 @@ know the publisher.
 1. Put `hypersuite.exe` wherever you like — `Downloads`, a USB stick, a tools
    folder. It does not install anything.
 2. Double-click it. **SmartScreen** may say "Windows protected your PC":
-   click **More info**, check that the publisher reads *Tasc Ltd.* (or
+   click **More info**, check that the publisher reads *hypersuite (github.com/namshubs/hypersuite)* (or
    *Unknown publisher* if the certificate isn't trusted yet), then **Run
    anyway**. Windows asks only once per version.
 3. The **launcher** opens. In the footer, *Unpacking the bundled tools…*
@@ -69,7 +68,7 @@ display language; your choice is remembered.
 
 ### Optional: trust the signature
 
-If you want Windows to show *Tasc Ltd.* as a verified publisher and skip the
+If you want Windows to show *hypersuite (github.com/namshubs/hypersuite)* as a verified publisher and skip the
 SmartScreen warning, import the certificate once (PowerShell or cmd **as
 administrator**, in the download folder):
 
@@ -80,7 +79,7 @@ certutil -addstore TrustedPublisher hypersuite-codesign.cer
 
 Before you do, compare the certificate's SHA-256 with `SHA256SUMS.txt`.
 Trusting a root certificate means trusting everything signed with it; to undo
-it, remove "Tasc Ltd. hypersuite Code Signing" from both stores in
+it, remove "hypersuite (github.com/namshubs/hypersuite)" from both stores in
 `certlm.msc`.
 
 ## The usual order

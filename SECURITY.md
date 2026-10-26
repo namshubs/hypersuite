@@ -36,6 +36,6 @@ themselves, please also inform their maintainers.
 ## Verifying downloads
 
 Every release lists SHA-256 checksums in `SHA256SUMS.txt`, and
-`hypersuite.exe` is signed with the certificate `CN=Tasc Ltd. hypersuite Code
-Signing` (thumbprint `D433147FD86AB27AAE46F4CDB9CD8FB61397F33F`). Don't run a
+`hypersuite.exe` is signed with the certificate `CN=hypersuite (github.com/namshubs/hypersuite)`
+(thumbprint `C7EC126C59C0081863A4467F960C367BA1630C0D`). Don't run a
 copy whose checksum or signature doesn't match.

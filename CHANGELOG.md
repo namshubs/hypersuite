@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.1.3 — 2026-10-25
+
+- **License: Apache License 2.0** (`LICENSE`), with the copyright and a
+  "use at your own risk" notice in `NOTICE` — both shown under About.
+  Replaces the hypersuite License, version 1.
+- New signing certificate: the publisher is now
+  `hypersuite (github.com/namshubs/hypersuite)` (thumbprint
+  `C7EC126C59C0081863A4467F960C367BA1630C0D`). If you trusted the previous
+  certificate, import the new `hypersuite-codesign.cer`.
+- Fixed: **Sort → Make plan failed** with `UNIQUE constraint failed:
+  actions.plan_run, actions.file_id` when the index held `.mov` files (a
+  `.mov` counted as Live-Photo companion and as video) or XML photo sidecars
+  (`.xmp`, `.aae` also counted as documents). Every file now belongs to one
+  class: a `.mov` next to a photo of the same name is part of that Live
+  Photo, any other `.mov` is a video.
+- PDFs that a parser can't read no longer print a "panicked at … bad length
+  of hexstring" message for every file; they are reported as unreadable and
+  go to the Inbox, as before.
+- Engines: hyperindex 0.103.1, hyperfiler 0.18.2, Outbird 1.0.0.
+
 ## 2.1.2 — 2026-10-25
 
 First public release.

@@ -1,0 +1,49 @@
+hypersuite
+Copyright 2026 the hypersuite authors
+https://github.com/namshubs/hypersuite
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not
+use this software except in compliance with the License. You may obtain a
+copy of the License in the file LICENSE or at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations
+under the License.
+
+This product bundles third-party components under their own licenses; see
+THIRD-PARTY-NOTICES.md (also shown in the program under About). The source
+code of the bundled GPL/LGPL components is attached to every release as
+third-party-sources.zip.
+
+
+Use at your own risk
+--------------------
+
+You use hypersuite at your own risk. There is no organised support. Like any
+software, hypersuite may contain errors: keep your original data and an
+independent backup until you have checked the result yourself.
+
+Or, as legend has it was printed on the back of the first Z-80 emulation
+cards (supposedly the words of Bill Gates' father, the lawyer):
+
+    "In the legal sense: we deny that this software is fit for any purpose
+    whatsoever."
+
+
+Nutzung auf eigene Gefahr
+-------------------------
+
+Die Nutzung von hypersuite erfolgt auf eigene Gefahr. Es gibt keinen
+geregelten Support. Wie jede Software kann hypersuite Fehler enthalten:
+Bewahren Sie Ihre Originaldaten und eine unabhängige Sicherung auf, bis Sie
+das Ergebnis selbst geprüft haben.
+
+Oder, wie es der Legende nach – vermutlich vom Vater von Bill Gates, dem
+Juristen – hinten auf die ersten Z-80-Emulationskarten geschrieben wurde:
+
+    „In juristischem Sinne: Wir bestreiten, dass diese Software für einen wie
+    auch immer gearteten Zweck geeignet ist."

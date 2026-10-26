@@ -41,7 +41,7 @@ and, if you like, how to make Windows trust the signature.
 - [Command line](docs/command-line.md) — every command and option
 - [Files, settings and privacy](docs/files-and-settings.md) — what is stored where
 - [Troubleshooting](docs/troubleshooting.md)
-- [Deutsch: Kurzanleitung](docs/de/README.md)
+- Deutsch: [Handbuch](docs/de/handbuch.md) · [Handbuch als PDF](docs/de/hypersuite-handbuch.pdf) · [Kurzanleitung](docs/de/README.md)
 
 ## Feedback
 
@@ -53,13 +53,14 @@ and, if you like, how to make Windows trust the signature.
 - **Security problem?** Please don't open a public issue — see
   [SECURITY.md](SECURITY.md).
 
-hypersuite is not open source, and this repository holds only releases and
-documentation. Pull requests can't be accepted; please describe the change in
+This repository holds the releases and the documentation; the source code is
+not published here. Pull requests can't be accepted; please describe the change in
 an issue instead.
 
 ## License
 
-Free to use, privately and commercially, without warranty — see
-[LICENSE](LICENSE). The bundled third-party components keep their own licenses
+[Apache License 2.0](LICENSE) — free to use, share and build on, privately
+and commercially. **Use at your own risk:** there is no organised support,
+and like any software hypersuite may contain errors — see [NOTICE](NOTICE). The bundled third-party components keep their own licenses
 (listed in the program under **About**, and in `THIRD-PARTY-NOTICES.md` in
 each release).

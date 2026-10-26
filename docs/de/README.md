@@ -6,7 +6,7 @@ und Outlook-Postfächer nach Thunderbird bringt. Alles läuft lokal; hypersuite
 baut keine Netzwerkverbindungen auf.
 
 Die Oberfläche gibt es auf Deutsch und Englisch (`DE | EN` in jedem Fenster).
-Die ausführliche Dokumentation ist auf Englisch: [Documentation](../README.md).
+Ausführlich: das [Handbuch](handbuch.md) – auch als gestaltetes [PDF](hypersuite-handbuch.pdf) – und die englische [Documentation](../README.md).
 
 ![Launcher](../screenshots/launcher-de.png)
 
@@ -18,7 +18,7 @@ Die ausführliche Dokumentation ist auf Englisch: [Documentation](../README.md).
    Wert aus `SHA256SUMS.txt` ergeben.
 3. Doppelklick. Warnt SmartScreen („Der Computer wurde durch Windows
    geschützt“): **Weitere Informationen** → **Trotzdem ausführen**. Die Exe ist
-   selbstsigniert (Tasc Ltd.); wie man dem Zertifikat dauerhaft vertraut, steht
+   selbstsigniert (hypersuite (github.com/namshubs/hypersuite)); wie man dem Zertifikat dauerhaft vertraut, steht
    in [Getting started](../getting-started.md#optional-trust-the-signature).
 4. Beim ersten Start jeder Version werden die mitgelieferten Werkzeuge
    (≈ 260 MB) nach `%LOCALAPPDATA%\hypersuite\` entpackt.
@@ -35,7 +35,7 @@ Datenbank. **Scan liest nur**, es verändert nichts.
   Reicht der Platz nicht, schlägt Scan das Laufwerk mit dem meisten freien
   Platz vor. **Vorhandene öffnen…** übernimmt eine bestehende Datenbank samt
   den Einstellungen ihres letzten Scans.
-- **Abgebrochen?** Scan zeigt „Der letzte Scan wurde unterbrochen“ →
+- **Abgebrochen?** Scan zeigt „Der letzte Scan wurde abgebrochen“ →
   **Fortsetzen**. Schon Erfasstes wird nicht neu gelesen.
 - Wiederholte Scans sind schnell: Unveränderte Dateien werden nicht neu
   gelesen. USB-Sticks werden über ihre Seriennummer wiedererkannt, auch unter
@@ -64,7 +64,7 @@ einordnen lässt – nichts wird geraten oder ausgelassen. Details:
 [Sort](../sort.md).
 
 *Advanced:* Spiegeln statt umsortieren, OCR für gescannte PDFs,
-KI-Dokumentensortierung (lokales Modell), eigene Firmen/Personen
+KI-Dokumentsortierung (lokales Modell), eigene Firmen/Personen
 (`entities.toml`), Film-Genres (`genres.toml`), PST-Dateien aus dem Index
 verarbeiten, Suche im Bestand, Wartung.
 
