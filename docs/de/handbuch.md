@@ -3,7 +3,7 @@
 **Erfassen · Ordnen · Mails umziehen.** Ihre Dateien und Ihre Outlook-Mails aus
 einer Windows-Umgebung – aufbereitet, geordnet und sofort wieder nutzbar.
 
-Version 2.1.4 · Oktober 2026 · für Windows 10 und 11 (64 Bit)
+Version 2.1.5 · Oktober 2026 · für Windows 10 und 11 (64 Bit)
 
 <!-- pdf:part -->
 ## Teil I – Was hypersuite für Sie tut
@@ -590,10 +590,15 @@ nur die Releases und die Dokumentation. Das ist bewusst so: Der Code und seine
 Kernideen sollen nicht in den Trainingsdaten großer KI-Modelle landen, und die
 Richtung des Projekts bleibt in der Hand des Autors.
 
-Rückmeldungen sind willkommen, ebenso Entwicklerinnen und Entwickler, die diese
-Haltung teilen. Wer den Code ansehen oder mitarbeiten möchte, eröffnet eine
-Discussion in der Kategorie „Contributor access“ (oder ein Issue mit der Vorlage
-*Contributor access*) mit ein paar Sätzen zur eigenen Person und zum Interesse.
-Wenn es passt, folgt eine Einladung auf den Entwicklungsserver.
+Rückmeldungen, Fehlerberichte und Ideen sind immer willkommen. Zugang zum
+Quellcode bekommt, wer das Ziel des Projekts teilt – Menschen helfen, Outlook zu
+verlassen, Windows aufzuräumen und den Umstieg auf Linux vorzubereiten – und vier
+Dinge mitbringt: Mensch (keine KI als Contributor; KI als Werkzeug ist in Ordnung),
+keine Verbindung zu Big Tech, Engagement für Datenschutz bzw. Nutzerrechte und
+eine technische Verbesserungsagenda. Die Anfrage läuft über eine Discussion in der
+Kategorie „Contributor access“ oder ein Issue mit der Vorlage *Contributor
+access*; danach folgen ein interaktives Onboarding und die Unterschrift unter das
+Contributor Agreement. Details: `CONTRIBUTING.md` und `CONTRIBUTOR-AGREEMENT.md`
+im Ordner `.github` des Projekts.
 
 Projekt: <https://github.com/namshubs/hypersuite>

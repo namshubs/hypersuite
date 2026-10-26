@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.1.5 — 2026-10-26
+
+- `THIRD-PARTY-NOTICES.md` (also under **About**) opens with hypersuite's own
+  license — the Sustainable Use License 1.0, not the Apache License 2.0 as
+  2.1.4 still said there — followed by why the source code is not published,
+  how to take part, and the use-at-your-own-risk notice.
+- Contributing: the requirements for source access and the contributor
+  agreement are in `.github/CONTRIBUTING.md` and
+  `.github/CONTRIBUTOR-AGREEMENT.md`; the German handbook describes them.
+- No functional changes.
+
 ## 2.1.4 — 2026-10-26
 
 - **License: Sustainable Use License 1.0** (`LICENSE`) instead of the Apache
