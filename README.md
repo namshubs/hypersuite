@@ -16,6 +16,31 @@ Everything runs on your computer. hypersuite makes no network connections and
 sends nothing anywhere; the document model, OCR (Tesseract, seven languages),
 PDF rendering and music fingerprinting all ship inside the one exe.
 
+## What it does to your files
+
+hypersuite copies; it does not move or delete unless you ask it to, step by
+step.
+
+| | Reads | Writes | Moves or deletes |
+|---|---|---|---|
+| **Scan** | your folders | only its own database | nothing |
+| **Duplicate reports** | the database | a Markdown + JSON report | nothing — the reports only recommend |
+| **Sort: Plan, Review** | the database | a plan in the target folder | nothing — this is the dry run |
+| **Sort: Apply, Verify** | your files | copies in the target library, each checked against its checksum | nothing — the originals stay where they are |
+| **Sort: Quarantine** (optional) | library and originals | — | **moves** originals whose library copy checks out again into `<target>\.hyperfiler\quarantine\`, paths kept |
+| **Sort: Purge** (optional) | quarantine | — | **deletes** quarantined files — only after you confirm a separate backup, never a file whose copy fails its check, no undo |
+| **Outbird** | the PST, **read-only** | a new `<name>-thunderbird` folder next to it; into Thunderbird only after a full profile backup and a passed check, and never while Thunderbird is open | nothing in the PST; existing Thunderbird mail folders only with `--overwrite`, after the backup |
+
+- **Duplicates** are files with the same size and the same BLAKE3 checksum of
+  their entire content — no sampling, no name or date matching. A folder is
+  only marked removable if every file in it exists elsewhere.
+- **Dry runs:** Sort's plan shows where every file would go before anything
+  is copied; on the command line `index apply`, `mail export` and `mail auto`
+  take `--dry-run`.
+- Apply, Verify and Quarantine compare against the checksums from the scan,
+  so a copy that changed on the way is noticed, not trusted. Online-only
+  OneDrive files are not downloaded unless you switch that on in Scan.
+
 ## Download
 
 Get `hypersuite.exe` from the [latest release](https://github.com/namshubs/hypersuite/releases/latest). No
@@ -26,6 +51,8 @@ installer, no runtime to install, no administrator rights needed.
 - Each release also has `SHA256SUMS.txt`, the code-signing certificate
   `hypersuite-codesign.cer`, and `third-party-sources.zip` (source code of the
   bundled third-party components under GPL/LGPL).
+- Each release's notes link the **VirusTotal** report of exactly that
+  `hypersuite.exe` (by its SHA-256).
 
 The exe is signed with a self-signed certificate, so Windows SmartScreen warns
 the first time ("Windows protected your PC" → **More info** → **Run anyway**).
@@ -76,11 +103,19 @@ issue form.
 
 ## License
 
-[Sustainable Use License 1.0](LICENSE) — free to use for personal,
+**Source-available on request, not open source.** hypersuite is free to use
+under the [Sustainable Use License 1.0](LICENSE): for personal,
 non-commercial and internal business purposes, and free to share at no
 charge for non-commercial purposes; selling hypersuite or offering it
-commercially to others is not permitted. hypersuite is not open source.
-Version 2.1.3 was released under the Apache License 2.0. **Use at your own risk:** there is no organised support,
+commercially to others is not permitted. The source code is not in this
+repository; people who share the project's goal can get access (see
+*About the source code* above).
+
+Version 2.1.3 was released under the Apache License 2.0; from 2.1.4 on, the
+license changed for the reasons in *About the source code*. A copy of 2.1.3
+you already have stays under Apache 2.0.
+
+**Use at your own risk:** there is no organised support,
 and like any software hypersuite may contain errors — see [NOTICE](NOTICE). The bundled third-party components keep their own licenses
 (listed in the program under **About**, and in `THIRD-PARTY-NOTICES.md` in
 each release).

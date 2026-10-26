@@ -3,7 +3,7 @@
 **Erfassen · Ordnen · Mails umziehen.** Ihre Dateien und Ihre Outlook-Mails aus
 einer Windows-Umgebung – aufbereitet, geordnet und sofort wieder nutzbar.
 
-Version 2.1.5 · Oktober 2026 · für Windows 10 und 11 (64 Bit)
+Version 2.1.7 · Oktober 2026 · für Windows 10 und 11 (64 Bit)
 
 <!-- pdf:part -->
 ## Teil I – Was hypersuite für Sie tut
@@ -137,6 +137,14 @@ Thunderbird überhaupt anzufassen.
 - **Nur lesen, dann kopieren, dann prüfen.** Scan liest nur. Sort kopiert und
   verifiziert jede Kopie. Gelöscht wird ausschließlich auf Ihren ausdrücklichen
   Befehl – und nie eine Datei, deren Kopie nicht nachweislich stimmt.
+- **Duplikate nach Inhalt.** Duplikat heißt: gleiche Größe und gleiche
+  BLAKE3-Prüfsumme über den ganzen Inhalt – keine Stichproben, kein Vergleich
+  nach Name oder Datum. Die Berichte empfehlen nur; gelöscht wird nichts.
+- **Erst planen, dann kopieren.** Plan und Prüfen in Sort sind der Probelauf:
+  Sie sehen, wohin jede Datei käme, bevor eine einzige kopiert wird.
+- **Die PST bleibt unberührt.** Outbird öffnet die PST-Datei nur zum Lesen,
+  sichert das ganze Thunderbird-Profil, bevor es etwas hineinschreibt, und
+  schreibt nur, wenn die Umwandlung geprüft ist und Thunderbird geschlossen ist.
 - **Offline.** Keine Telemetrie, keine Updates im Hintergrund, kein Konto.
   Sprachmodell, Texterkennung (Deutsch, Englisch, Französisch, Italienisch,
   Spanisch, Russisch), PDF-Darstellung und Musik-Fingerabdrücke sind eingebaut.
@@ -175,6 +183,9 @@ Thunderbird überhaupt anzufassen.
    ```
 
    Der Wert für `hypersuite.exe` muss in beiden Ausgaben identisch sein.
+   Die Release-Notes verlinken außerdem den **VirusTotal**-Bericht zu genau
+   diesem SHA-256-Wert – das Urteil von rund 70 Virenscannern über genau diese
+   Datei.
 3. Legen Sie `hypersuite.exe` an einen beliebigen Ort – Downloads, ein
    Werkzeugordner oder ein USB-Stick.
 4. **Doppelklick.** Beim ersten Mal zeigt Windows möglicherweise *„Der Computer
@@ -564,8 +575,11 @@ hypersuite steht unter der **Sustainable Use License 1.0**: kostenlos nutzbar f�
 private, nicht-kommerzielle und interne geschäftliche Zwecke und kostenlos
 weitergebbar für nicht-kommerzielle Zwecke; hypersuite zu verkaufen oder anderen
 kommerziell anzubieten ist nicht erlaubt. Keine Gewährleistung (Datei `LICENSE`,
-Copyright-Hinweis in `NOTICE`). hypersuite ist keine Open-Source-Software; Version
-2.1.3 erschien unter der Apache License 2.0. Die mitgelieferten Komponenten von
+Copyright-Hinweis in `NOTICE`). hypersuite ist **keine Open-Source-Software**; der
+Quellcode ist auf Anfrage einsehbar (siehe *Quellcode und Mitarbeit*). Version
+2.1.3 erschien unter der Apache License 2.0; seit 2.1.4 gilt die neue Lizenz aus
+den dort genannten Gründen – eine Kopie von 2.1.3, die Sie schon haben, bleibt
+unter Apache 2.0. Die mitgelieferten Komponenten von
 Drittanbietern behalten ihre eigenen Lizenzen; die Liste steht im Programm unter
 **About**, der Quellcode der GPL/LGPL-Komponenten liegt jedem Release als
 `third-party-sources.zip` bei.

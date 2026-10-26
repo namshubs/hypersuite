@@ -2,7 +2,7 @@
 
 Outbird converts an Outlook data file (`.pst`) into Thunderbird mail folders.
 It reads the PST directly — Outlook doesn't need to be installed — and needs
-no prior scan.
+no prior scan. The PST is opened read-only and never changed.
 
 ![Outbird](screenshots/mail-en.png)
 

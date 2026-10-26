@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.1.7 — 2026-10-26
+
+- The exe's file properties (*Copyright*) name the Sustainable Use License
+  1.0; 2.1.4 to 2.1.6 still said Apache License 2.0 there.
+- No functional changes.
+
+## 2.1.6 — 2026-10-26
+
+- Outbird opens PST files strictly read-only. Before, the PST reader also
+  took a write handle whenever Windows allowed it (it never wrote through
+  it); now there is none.
+- README: *What it does to your files* — what each step reads, writes, moves
+  or deletes, how duplicates are decided, and where the dry runs are.
+- Release notes link the VirusTotal report of the release's `hypersuite.exe`.
+- License section states plainly: source-available on request, not open
+  source, and why 2.1.3 was Apache 2.0.
+
 ## 2.1.5 — 2026-10-26
 
 - `THIRD-PARTY-NOTICES.md` (also under **About**) opens with hypersuite's own

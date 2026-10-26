@@ -34,6 +34,10 @@ Get-Content .\SHA256SUMS.txt
 
 The two values for `hypersuite.exe` must be identical.
 
+The release notes link the **VirusTotal** report for that same SHA-256, so
+you can see what some 70 virus scanners say about exactly this file without
+uploading it yourself.
+
 Check the signature:
 
 ```powershell

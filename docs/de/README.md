@@ -15,13 +15,25 @@ Ausführlich: das [Handbuch](handbuch.md) – auch als gestaltetes [PDF](hypersu
 1. `hypersuite.exe` aus dem [neuesten Release](https://github.com/namshubs/hypersuite/releases/latest)
    laden. Windows 10/11, 64 Bit. Keine Installation, keine Adminrechte.
 2. Optional prüfen (PowerShell): `Get-FileHash .\hypersuite.exe` muss den
-   Wert aus `SHA256SUMS.txt` ergeben.
+   Wert aus `SHA256SUMS.txt` ergeben. Die Release-Notes verlinken den
+   VirusTotal-Bericht zu genau dieser Datei.
 3. Doppelklick. Warnt SmartScreen („Der Computer wurde durch Windows
    geschützt“): **Weitere Informationen** → **Trotzdem ausführen**. Die Exe ist
    selbstsigniert (hypersuite (github.com/namshubs/hypersuite)); wie man dem Zertifikat dauerhaft vertraut, steht
    in [Getting started](../getting-started.md#optional-trust-the-signature).
 4. Beim ersten Start jeder Version werden die mitgelieferten Werkzeuge
    (≈ 260 MB) nach `%LOCALAPPDATA%\hypersuite\` entpackt.
+
+## Was mit Ihren Dateien passiert
+
+- **Scan** liest nur und schreibt nur in seine eigene Datenbank.
+- **Sort** kopiert und prüft jede Kopie gegen ihre Prüfsumme; die Originale
+  bleiben, wo sie sind. Plan und Prüfen sind der Probelauf.
+- **Quarantäne** verschiebt Originale erst, wenn ihre Kopie erneut stimmt;
+  **endgültig löschen** gibt es nur mit bestätigter zweiter Sicherung.
+- **Outbird** öffnet die PST nur zum Lesen und sichert das Thunderbird-Profil,
+  bevor es etwas hineinschreibt.
+- Duplikat heißt: gleiche Größe und gleiche BLAKE3-Prüfsumme des ganzen Inhalts.
 
 ## Scan – Dateien erfassen
 
@@ -106,7 +118,8 @@ technische Verbesserungsagenda – und ein interaktives Onboarding; Details in
 Kategorie „Contributor access“ oder Issue mit der Vorlage *Contributor access*.
 
 Lizenz: [Sustainable Use License 1.0](../../LICENSE) – kostenlos für private,
-nicht-kommerzielle und interne geschäftliche Nutzung; keine Open-Source-Software.
+nicht-kommerzielle und interne geschäftliche Nutzung; Quellcode auf Anfrage
+einsehbar, **keine Open-Source-Software**. 2.1.3 erschien unter Apache 2.0.
 
 **Nutzung auf eigene Gefahr:** Es gibt keinen geregelten Support, und wie jede
 Software kann hypersuite Fehler enthalten. Bewahren Sie Ihre Originaldaten und
