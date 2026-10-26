@@ -38,8 +38,10 @@ who meet **all** of the following:
    form, and cover the four points above.
 2. If it looks like a fit, we arrange an interactive onboarding: a
    conversation about you, your agenda and how we work.
-3. After a successful onboarding you get an invitation to the development
-   server.
+3. You sign the [contributor agreement](CONTRIBUTOR-AGREEMENT.md): you keep
+   the copyright in your work and license it to the project, you keep the
+   source code confidential, and we keep hypersuite free for its users.
+4. Then you get an invitation to the development server.
 
 We may not answer every request, and a "no" is not a judgement of you. If
 we don't see a fit, we say so early rather than waste your time — or ours.
