@@ -93,3 +93,19 @@ Fehler und Wünsche bitte als [Issue](https://github.com/namshubs/hypersuite/iss
 gern auf Deutsch. Fragen in den [Discussions](https://github.com/namshubs/hypersuite/discussions).
 Sicherheitslücken bitte nicht öffentlich melden, sondern wie in
 [SECURITY.md](../../SECURITY.md) beschrieben.
+
+## Quellcode und Mitarbeit
+
+Entwickelt wird auf einem eigenen Git-Server; hier liegen nur Releases und
+Dokumentation – bewusst, damit Code und Kernideen nicht in KI-Trainingsdaten
+landen und die Richtung des Projekts in der Hand des Autors bleibt. Wer den
+Code ansehen oder mitarbeiten möchte: Discussion in der Kategorie
+„Contributor access“ oder Issue mit der Vorlage *Contributor access*, mit ein
+paar Sätzen zu sich und zum Interesse. Wenn es passt, folgt eine Einladung.
+
+Lizenz: [Sustainable Use License 1.0](../../LICENSE) – kostenlos für private,
+nicht-kommerzielle und interne geschäftliche Nutzung; keine Open-Source-Software.
+
+**Nutzung auf eigene Gefahr:** Es gibt keinen geregelten Support, und wie jede
+Software kann hypersuite Fehler enthalten. Bewahren Sie Ihre Originaldaten und
+eine unabhängige Sicherung auf, bis Sie das Ergebnis selbst geprüft haben.

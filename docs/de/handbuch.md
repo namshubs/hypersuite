@@ -3,7 +3,7 @@
 **Erfassen · Ordnen · Mails umziehen.** Ihre Dateien und Ihre Outlook-Mails aus
 einer Windows-Umgebung – aufbereitet, geordnet und sofort wieder nutzbar.
 
-Version 2.1.3 · Oktober 2026 · für Windows 10 und 11 (64 Bit)
+Version 2.1.4 · Oktober 2026 · für Windows 10 und 11 (64 Bit)
 
 <!-- pdf:part -->
 ## Teil I – Was hypersuite für Sie tut
@@ -560,9 +560,12 @@ Fehler melden und Fragen stellen: <https://github.com/namshubs/hypersuite/issues
 
 ### 11. Lizenz
 
-hypersuite steht unter der **Apache License 2.0**: kostenlos nutzbar, weitergebbar
-und erweiterbar, privat und geschäftlich, ohne Gewährleistung (Datei `LICENSE`,
-Copyright-Hinweis in `NOTICE`). Die mitgelieferten Komponenten von
+hypersuite steht unter der **Sustainable Use License 1.0**: kostenlos nutzbar für
+private, nicht-kommerzielle und interne geschäftliche Zwecke und kostenlos
+weitergebbar für nicht-kommerzielle Zwecke; hypersuite zu verkaufen oder anderen
+kommerziell anzubieten ist nicht erlaubt. Keine Gewährleistung (Datei `LICENSE`,
+Copyright-Hinweis in `NOTICE`). hypersuite ist keine Open-Source-Software; Version
+2.1.3 erschien unter der Apache License 2.0. Die mitgelieferten Komponenten von
 Drittanbietern behalten ihre eigenen Lizenzen; die Liste steht im Programm unter
 **About**, der Quellcode der GPL/LGPL-Komponenten liegt jedem Release als
 `third-party-sources.zip` bei.
@@ -579,5 +582,18 @@ Juristen – hinten auf die ersten Z-80-Emulationskarten geschrieben wurde:
 
 > „In juristischem Sinne: Wir bestreiten, dass diese Software für einen wie auch
 > immer gearteten Zweck geeignet ist.“
+
+#### Quellcode und Mitarbeit
+
+Entwickelt wird auf einem eigenen, unabhängigen Git-Server; veröffentlicht werden
+nur die Releases und die Dokumentation. Das ist bewusst so: Der Code und seine
+Kernideen sollen nicht in den Trainingsdaten großer KI-Modelle landen, und die
+Richtung des Projekts bleibt in der Hand des Autors.
+
+Rückmeldungen sind willkommen, ebenso Entwicklerinnen und Entwickler, die diese
+Haltung teilen. Wer den Code ansehen oder mitarbeiten möchte, eröffnet eine
+Discussion in der Kategorie „Contributor access“ (oder ein Issue mit der Vorlage
+*Contributor access*) mit ein paar Sätzen zur eigenen Person und zum Interesse.
+Wenn es passt, folgt eine Einladung auf den Entwicklungsserver.
 
 Projekt: <https://github.com/namshubs/hypersuite>

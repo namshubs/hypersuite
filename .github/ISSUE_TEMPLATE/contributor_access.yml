@@ -1,0 +1,23 @@
+name: Contributor access
+description: Ask for access to the development server to review the code or contribute.
+title: "Contributor access"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The source code lives on a self-hosted Git server, not here. Tell us a bit about yourself
+        and what you'd like to do; if it's a good fit, you'll get an invitation. English or German are both fine.
+  - type: textarea
+    id: about
+    attributes:
+      label: About you
+      description: Your background, and where we can see some of your work (optional).
+    validations:
+      required: true
+  - type: textarea
+    id: interest
+    attributes:
+      label: Your interest
+      description: Review, a specific feature or fix, a platform, documentation — whatever brings you here.
+    validations:
+      required: true

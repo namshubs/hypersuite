@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.1.4 — 2026-10-26
+
+- **License: Sustainable Use License 1.0** (`LICENSE`) instead of the Apache
+  License 2.0: free for personal, non-commercial and internal business use,
+  and free to share at no charge for non-commercial purposes; selling
+  hypersuite or offering it commercially to others is not permitted.
+  hypersuite is not open source. Copies of 2.1.3 keep the Apache License 2.0.
+- README, handbook and `NOTICE` explain why the source code is not published
+  and how to ask for contributor access (new issue form *Contributor access*).
+- No functional changes.
+
 ## 2.1.3 — 2026-10-25
 
 - **License: Apache License 2.0** (`LICENSE`), with the copyright and a

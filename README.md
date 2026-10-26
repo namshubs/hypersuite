@@ -25,7 +25,7 @@ installer, no runtime to install, no administrator rights needed.
   version unpacks about 260 MB of bundled tools into your user profile.
 - Each release also has `SHA256SUMS.txt`, the code-signing certificate
   `hypersuite-codesign.cer`, and `third-party-sources.zip` (source code of the
-  bundled open-source components under GPL/LGPL).
+  bundled third-party components under GPL/LGPL).
 
 The exe is signed with a self-signed certificate, so Windows SmartScreen warns
 the first time ("Windows protected your PC" → **More info** → **Run anyway**).
@@ -53,14 +53,31 @@ and, if you like, how to make Windows trust the signature.
 - **Security problem?** Please don't open a public issue — see
   [SECURITY.md](SECURITY.md).
 
-This repository holds the releases and the documentation; the source code is
-not published here. Pull requests can't be accepted; please describe the change in
-an issue instead.
+## About the source code
+
+Development happens on a self-hosted, independent Git server. Only releases
+and documentation are published here, so pull requests can't be accepted —
+please describe the change in an issue instead.
+
+This is deliberate: it keeps the code base and its core concepts out of
+large-scale AI training pipelines, and it keeps the project's direction in
+the author's hands.
+
+**Want to contribute or review the code?** Feedback is welcome, and so are
+developers who share the project's approach. Open a
+[Discussion](https://github.com/namshubs/hypersuite/discussions) in the
+"Contributor access" category (or an issue using the
+[Contributor access](https://github.com/namshubs/hypersuite/issues/new?template=contributor_access.yml)
+form) with a short note about yourself and your interest. If it's a good fit,
+you'll get an invitation to the development server.
 
 ## License
 
-[Apache License 2.0](LICENSE) — free to use, share and build on, privately
-and commercially. **Use at your own risk:** there is no organised support,
+[Sustainable Use License 1.0](LICENSE) — free to use for personal,
+non-commercial and internal business purposes, and free to share at no
+charge for non-commercial purposes; selling hypersuite or offering it
+commercially to others is not permitted. hypersuite is not open source.
+Version 2.1.3 was released under the Apache License 2.0. **Use at your own risk:** there is no organised support,
 and like any software hypersuite may contain errors — see [NOTICE](NOTICE). The bundled third-party components keep their own licenses
 (listed in the program under **About**, and in `THIRD-PARTY-NOTICES.md` in
 each release).
