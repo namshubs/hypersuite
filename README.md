@@ -61,6 +61,7 @@ and, if you like, how to make Windows trust the signature.
 
 ## Documentation
 
+- [User manual](docs/user-manual.md) ([PDF](docs/hypersuite-user-manual.pdf)) — everything below in one document
 - [Getting started](docs/getting-started.md) — download, verify, first start, update, uninstall
 - [Scan](docs/scan.md) — indexing, the database, duplicates, photos, continuing an interrupted scan
 - [Sort](docs/sort.md) — the library layout and the Plan → Review → Apply → Verify steps, quarantine and purge
