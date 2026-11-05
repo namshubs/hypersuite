@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.2.0 — 2026-11-05
+
+- **Scan: drives one by one.** Every local drive — fixed and removable (USB
+  docks) — can be ticked on its own, besides the folders.
+- **Scan: "Don't scan" list.** Folders to leave out with everything below
+  them, plus suggestions that are on by default: the Sort target,
+  `hypersuite` folders, the database folder, rescue folders and photo
+  libraries of earlier runs. A suggestion a scanned folder lies in is not
+  applied, so the rescue folder itself can still be scanned.
+- **Forensic mode** for drives that drop out after a while (heat, USB dock):
+  Scan lists metadata only, saved folder by folder, and continues where it
+  stopped — after a drop-out it cools down, waits for the same drive (under
+  any letter), optionally restarts its USB device, and carries on by itself.
+  Sort then offers **Rescue files**: copies them unchanged into
+  `<target>\_rescue\…`, smallest first, skips files that hang instead of
+  waiting, pauses before the drive is expected to fail again, and can be
+  paused and continued at any time.
+- Command line: `index scan --forensic`, `--exclude-dir`, `index rescue`.
+
 ## 2.1.7 — 2026-10-26
 
 - The exe's file properties (*Copyright*) name the Sustainable Use License

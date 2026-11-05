@@ -1,9 +1,9 @@
-# hypersuite 2.1 – Handbuch
+# hypersuite 2.2 – Handbuch
 
 **Erfassen · Ordnen · Mails umziehen.** Ihre Dateien und Ihre Outlook-Mails aus
 einer Windows-Umgebung – aufbereitet, geordnet und sofort wieder nutzbar.
 
-Version 2.1.7 · Oktober 2026 · für Windows 10 und 11 (64 Bit)
+Version 2.2.0 · November 2026 · für Windows 10 und 11 (64 Bit)
 
 <!-- pdf:part -->
 ## Teil I – Was hypersuite für Sie tut
@@ -44,6 +44,9 @@ auf Ihrem Rechner und baut keine einzige Netzwerkverbindung auf.
   nach Thunderbird übernehmen, ohne dass ein Ordner verloren geht.
 - **Nachlass und Firmenauflösung** – die Daten eines Rechners vollständig,
   nachvollziehbar und geordnet übergeben.
+- **Rettung von einer altersschwachen Platte** – eine Festplatte, die nach
+  einigen Minuten heiß wird und sich abmeldet, Stück für Stück auslesen, bis
+  alles Lesbare in Sicherheit ist.
 
 <!-- pdf:module scan -->
 ### Scan – das Gedächtnis Ihrer Laufwerke
@@ -70,6 +73,15 @@ Dateien und doppelte Ordner zeigen, was sich sicher entfernen ließe – entsche
 und löschen tun Sie selbst. Für Fotos ermittelt Scan zusätzlich das
 Aufnahmedatum und – bei Bildern mit GPS-Daten – den Aufnahmeort, mit einer
 eingebauten Ortsdatenbank, ohne dass je ein Standort Ihren Rechner verlässt.
+
+**Scan rettet, was wegzufallen droht.** Eine alte Platte, die nach zehn Minuten
+heiß wird, oder ein USB-Dock, das sich immer wieder abmeldet: Im
+**Forensik-Modus** liest Scan nur die Dateiliste, speichert sie Ordner für
+Ordner und macht nach jedem Ausfall dort weiter, wo die Platte aufgehört hat.
+Sort kopiert danach die Dateien herunter – die kleinen zuerst, hängende Dateien
+werden übersprungen statt abgewartet. Fällt die Platte aus, lässt hypersuite sie
+abkühlen, wartet, bis sie wieder da ist, und setzt von selbst fort; nach dem
+ersten Ausfall legt es die Pause schon ein, **bevor** sie wieder ausfällt.
 
 <!-- pdf:module sort -->
 ### Sort – Ihre Bibliothek, sofort nutzbar
@@ -274,6 +286,27 @@ Windows-Benutzerordner und sind vorausgewählt; **Downloads** ist aus. Ein Klick
 schaltet einen Ordner ein oder aus. **Ordner hinzufügen** nimmt beliebige weitere
 Ordner auf. Ihre Auswahl wird gespeichert.
 
+**Laufwerke** zeigt jedes lokale Laufwerk einzeln – interne Platten ebenso wie
+USB-Platten und Docks (Bezeichnung, freier Platz und „Wechseldatenträger“ beim
+Darüberfahren). Ein angehaktes Laufwerk wird vollständig gescannt, zusätzlich zu
+den gewählten Ordnern.
+
+**Nicht scannen** nimmt Ordner auf, die mit allem darunter ausgelassen werden
+(**Ordner ausschließen…**). Vorgeschlagen und bereits eingeschaltet sind die
+Ordner, in die hypersuite selbst schreibt:
+
+| Vorschlag | Warum |
+|---|---|
+| Sort-Ziel | sonst würde die fertige Bibliothek als Dublette ihrer eigenen Originale erfasst |
+| `hypersuite`-Ordner | Bibliotheken früherer Läufe auf jedem Laufwerk |
+| Datenbank-Ordner | das Verzeichnis selbst und seine Zwischendateien |
+| Rettungsordner | Kopien aus dem Forensik-Modus (Kapitel 5.5) |
+| Fotobibliothek | Bibliotheksordner von *Plan anwenden* (Fotos, unter Advanced) |
+
+Ein Klick schaltet einen Vorschlag ab; die Wahl bleibt gespeichert. Liegt ein
+Ordner, den Sie scannen wollen, **innerhalb** eines Vorschlags – etwa der
+Rettungsordner selbst –, gilt dieser Vorschlag nicht und ist ausgegraut.
+
 #### 5.2 Die Datenbank
 
 Das Verzeichnis aller Dateien ist eine Datenbankdatei. hypersuite legt sie
@@ -314,7 +347,7 @@ halten.
 | | Verknüpfungen/Junctions folgen | standardmäßig aus, um Schleifen zu vermeiden |
 | | Alles neu hashen | jede Datei neu prüfen – erkennt schleichende Datenfehler |
 | | Nur-online-Dateien (OneDrive) | **überspringen**: nur Name, Größe, Datum erfassen, nichts herunterladen; **herunterladen und hashen**: vollständig lesen |
-| | Ordner ausschließen | Ordnernamen, die überall übersprungen werden, z. B. `node_modules, .git` |
+| | Ordner ausschließen | Ordner**namen**, die überall übersprungen werden, z. B. `node_modules, .git` (ganze Ordner: *Nicht scannen*, Kapitel 5.1) |
 | | Threads | Anzahl paralleler Leseprozesse; leer = automatisch |
 | Dubletten und Berichte | Berichtsordner | Standard `Dokumente\hypersuite` |
 | | Dateien ignorieren unter (Bytes) | Standard 4096 Byte |
@@ -327,6 +360,108 @@ halten.
 
 Die Berichte werden als Markdown-Datei und als JSON-Datei gespeichert und löschen
 nichts.
+
+#### 5.5 Forensik-Modus: Daten von einer ausfallenden Platte retten
+
+Manche Platten funktionieren nur noch eine Weile: Sie werden heiß, der
+USB-Controller im Gehäuse steigt aus, oder das Dock trennt die Verbindung. Ein
+normaler Scan liest jede Datei vollständig und verliert bei jedem Ausfall seinen
+Überblick. Der Forensik-Modus ist für genau diesen Fall gebaut – in zwei
+Schritten: **erst die Liste, dann die Dateien.**
+
+**Vorbereitung**
+
+- Datenbank und Sort-Ziel müssen auf einem **anderen** Laufwerk liegen als die
+  kranke Platte. hypersuite prüft das und sperrt sonst den Start.
+- Die Platte möglichst kühl aufstellen (nicht auf Teppich, Lüfter in der Nähe).
+- Unter **Laufwerke** nur die kranke Platte anhaken (oder unter **Ordner
+  hinzufügen** nur die Ordner darauf, die Sie brauchen).
+
+**Schritt 1 – Scan im Forensik-Modus**
+
+![Scan im Forensik-Modus](../screenshots/scan-forensic-de.png)
+
+Unter **Modus** auf **Forensik** stellen. Dann gibt es zwei Einstellungen:
+
+| Einstellung | Bedeutung |
+|---|---|
+| Abkühlzeit (Minuten) | so lange ruht die Platte nach einem Ausfall, Standard 10 |
+| USB-Gerät neu starten … | kommt die Platte nach dem Abkühlen nicht von selbst zurück, startet hypersuite ihren USB-Anschluss neu; Windows fragt dabei einmal nach Administratorrechten |
+
+**Scan starten** beginnt ohne Vorab-Zählung. Gelesen wird nur, was Windows im
+Ordnerverzeichnis ohnehin vorhält – Name, Größe, Datum. **Keine Datei wird
+geöffnet**, nichts wird geprüft, nichts wiederholt. Jeder fertig gelesene Ordner
+ist sofort gespeichert.
+
+- **Ein Ordner hängt?** Nach 30 Sekunden wird er übersprungen und im Bericht
+  vermerkt; der Scan läuft weiter.
+- **Die Platte fällt aus?** Die Statuszeile zeigt **Platte kühlt ab bis 14:32**,
+  danach **warte auf die Platte**. hypersuite erkennt die Platte an ihrer
+  Seriennummer – auch wenn Windows ihr beim Wiedereinstecken einen anderen
+  Buchstaben gibt. Ist sie zurück, geht es mit dem nächsten offenen Ordner
+  weiter, nicht von vorn. Erscheint sie nicht, schalten Sie das Dock aus und
+  wieder ein.
+- **Fenster geschlossen, Rechner neu gestartet?** Beim nächsten Öffnen zeigt
+  Scan die Karte **Der Forensik-Scan wurde unterbrochen**; **Fortsetzen** macht
+  beim nächsten offenen Ordner weiter.
+
+**Schritt 2 – Dateien retten (in Sort)**
+
+![Rettung in Sort](../screenshots/sort-rescue-de.png)
+
+Sobald die Datenbank einen Forensik-Scan enthält, zeigt Sort über den vier
+Schritten die Karte **Forensik-Scan: <Platte>** mit der Zahl und Größe der
+gelisteten Dateien. **Dateien retten** kopiert sie nach
+
+```
+<Ziel>\_rescue\<Bezeichnung>-<Seriennummer>\<Originalpfad>
+```
+
+– der Ordnerbaum der Platte, nichts umbenannt, nichts einsortiert. So arbeitet
+die Rettung:
+
+- **Kleine Dateien zuerst.** In jedem Zeitfenster, das die Platte durchhält,
+  kommen so möglichst viele Dateien in Sicherheit; große Videos und Images zum
+  Schluss.
+- **Springen statt warten.** Bewegt sich eine Kopie 20 Sekunden lang nicht,
+  wird sie abgebrochen und als *übersprungen* vermerkt; sofort beginnt die
+  nächste Datei. Hängen mehrere Dateien hintereinander, gilt das als Ausfall der
+  Platte.
+- **Abkühlen und von selbst weitermachen.** Bei einem Ausfall: Abkühlzeit,
+  warten auf die Platte, gegebenenfalls USB-Neustart, dann weiter mit der
+  nächsten offenen Datei.
+- **Pause vor dem nächsten Ausfall.** hypersuite merkt sich, wie lange die
+  Platte jeweils durchgehalten hat. Ab dem ersten Ausfall legt es die
+  Abkühlpause freiwillig ein, wenn 80 % der kürzesten bisherigen Laufzeit
+  erreicht sind – also bevor die Platte wieder aussteigt.
+- **Zweiter Versuch.** Am Ende bekommt jede übersprungene oder unlesbare Datei
+  genau einen weiteren Versuch.
+- **Anhalten und Fortsetzen** sind jederzeit möglich. Kopierte Dateien werden
+  nie ein zweites Mal kopiert.
+- **Jede Kopie** wird zuerst als Zwischendatei geschrieben, beim Schreiben mit
+  einer Prüfsumme versehen, erhält das Änderungsdatum des Originals und erst
+  dann ihren richtigen Namen. Auf der kranken Platte wird nichts verändert.
+
+Die Karte zeigt laufend **kopiert · offen · übersprungen · unlesbar**, wie oft
+die Platte ausgefallen ist und, während einer Pause, bis wann sie abkühlt.
+**Bericht öffnen** zeigt den Rettungsbericht
+(`<Ziel>\_rescue\rescue-report-<Seriennummer>.md`): Summen, jede Arbeitsphase
+mit Dauer und Grund ihres Endes, und die Liste aller Dateien, die nicht
+gerettet werden konnten.
+
+**Schritt 3 – Gerettetes ordnen**
+
+Ist die Rettung abgeschlossen, fügen Sie in Scan den Rettungsordner unter
+**Ordner hinzufügen** hinzu, stellen **Modus** wieder auf **Normal** und
+scannen ihn. Jetzt werden die geretteten Dateien vollständig geprüft, Dubletten
+erkannt – und Sort ordnet sie wie jede andere Quelle in die Bibliothek ein.
+
+> **Grenzen.** Der Forensik-Modus hilft bei Platten, die wegen Hitze, Kabel,
+> Dock oder USB-Controller aussteigen. Klackert eine Platte, schleift sie oder
+> wird sie gar nicht mehr erkannt, ist sie mechanisch beschädigt: Dann nicht
+> weiter betreiben, sondern einem Datenrettungsdienst übergeben. Dateien in
+> Ordnern, deren Liste nicht lesbar war, kennt hypersuite nicht und kann sie
+> nicht retten.
 
 ### 6. Sort im Detail
 
@@ -458,6 +593,16 @@ Originale weichen – bewusst in zwei Schritten:
 nicht vorkommen, sprachübergreifend. Vor der ersten Suche einmal **Suchindex neu
 aufbauen**.
 
+#### 6.7 Rettung von einer ausfallenden Platte
+
+Enthält die Datenbank einen Forensik-Scan, erscheint über den vier Schritten die
+Karte **Forensik-Scan: <Platte>** mit **Dateien retten**, **Anhalten** und
+**Rettung fortsetzen**. Ablauf und Einstellungen beschreibt Kapitel 5.5. Liegt
+das Sort-Ziel auf der Platte, die gerettet wird, ist **Dateien retten**
+gesperrt – wählen Sie dann unter **Ziel** ein anderes Laufwerk. Die Forensik-
+Dateien selbst plant Sort nicht ein: Sie haben noch keine Prüfsumme und werden
+erst über den Rettungsordner (Schritt 3 in Kapitel 5.5) Teil der Bibliothek.
+
 ### 7. Outbird im Detail
 
 ![Outbird](../screenshots/mail-de.png)
@@ -520,6 +665,10 @@ der Eingabeaufforderung `start /wait` voranstellen, in PowerShell
 ```bat
 start /wait hypersuite index scan E:\ --db D:\index.db
 start /wait hypersuite index scan --resume
+start /wait hypersuite index scan F:\ --exclude-dir F:\hypersuite --db D:\index.db
+start /wait hypersuite index scan F:\ --forensic --cooldown 600 --usb-restart --db D:\index.db
+start /wait hypersuite index rescue --target E:\Rettung --volume F: --db D:\index.db
+start /wait hypersuite index rescue --target E:\Rettung --status --db D:\index.db
 start /wait hypersuite file plan E:\hypersuite --db D:\index.db
 start /wait hypersuite file apply <PLAN-NUMMER> E:\hypersuite --db D:\index.db
 start /wait hypersuite mail export C:\mail\archiv.pst --root-name ""
@@ -540,6 +689,7 @@ ausführliche Referenz (englisch):
 | Berichte von Scan | `Dokumente\hypersuite\` |
 | Bibliothek | `<Laufwerk>:\hypersuite\` oder Ihr gewähltes Ziel |
 | Quarantäne | `<Ziel>\.hyperfiler\quarantine\` |
+| Rettungskopien (Forensik) | `<Ziel>\_rescue\<Bezeichnung>-<Seriennummer>\`, Bericht `<Ziel>\_rescue\rescue-report-<Seriennummer>.md` |
 | Thunderbird-Sicherung | `%APPDATA%\Thunderbird\Profiles\outbird-backup-<Datum>\` |
 
 hypersuite schreibt nichts in die Registry oder nach *Programme*. Die Datenbank
@@ -564,6 +714,11 @@ löschen und bei Bedarf Datenbank, Berichte und Bibliothek.
 | „Thunderbird läuft“ | Thunderbird vollständig beenden (auch im Infobereich) |
 | „… existiert bereits im Thunderbird-Profil“ | *Alles in einen Wurzelordner* eingeschaltet lassen oder anders benennen |
 | Kein Thunderbird-Profil gefunden | Thunderbird installieren und einmal starten – oder als mbox exportieren |
+| Eine Platte meldet sich nach einer Weile ab | Forensik-Modus verwenden (Kapitel 5.5) |
+| Forensik: „Die Datenbank liegt auf einem Laufwerk, das gescannt wird“ | unter **Datenbank** mit **Neu anlegen…** eine Datenbank auf einem anderen Laufwerk anlegen |
+| Rettung: **Dateien retten** gesperrt | das Sort-Ziel liegt auf der kranken Platte – anderes **Ziel** wählen |
+| Rettung: „warte auf die Platte“ bleibt stehen | Dock bzw. USB-Gehäuse aus- und wieder einschalten; die UAC-Abfrage für den USB-Neustart bestätigen |
+| Rettung: viele Dateien *übersprungen* | normal bei schwachen Sektoren; der zweite Durchgang am Ende versucht sie noch einmal, der Bericht listet den Rest |
 
 Fehler melden und Fragen stellen: <https://github.com/namshubs/hypersuite/issues>
 – gern auf Deutsch, mit der Version (`hypersuite --version`) und dem Text unter

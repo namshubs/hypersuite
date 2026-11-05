@@ -1,9 +1,9 @@
-# hypersuite 2.1 – User manual
+# hypersuite 2.2 – User manual
 
 **Index · Organise · Move mail.** Your files and your Outlook mail from a
 Windows machine – prepared, put in order and ready to use straight away.
 
-Version 2.1.7 · October 2026 · for Windows 10 and 11 (64-bit)
+Version 2.2.0 · November 2026 · for Windows 10 and 11 (64-bit)
 
 <!-- pdf:part -->
 ## Part I – What hypersuite does for you
@@ -44,6 +44,8 @@ open a single network connection.
   Thunderbird without losing a single folder.
 - **Estates and closing a business** – hand over the data of a computer
   completely, traceably and in order.
+- **Rescue from an ageing drive** – read a hard drive that gets hot and drops
+  out after a few minutes piece by piece, until everything readable is safe.
 
 <!-- pdf:module scan -->
 ### Scan – the memory of your drives
@@ -70,6 +72,15 @@ duplicate folders show what could safely be removed – you decide and delete
 yourself. For photos, Scan also works out the date taken and – for pictures
 with GPS data – the place, using a built-in place database, without a location
 ever leaving your computer.
+
+**Scan rescues what is about to fail.** An old drive that gets hot after ten
+minutes, or a USB dock that keeps disconnecting: in **forensic mode** Scan reads
+only the file list, saves it folder by folder and, after every drop-out,
+carries on where the drive stopped. Sort then copies the files off – the small
+ones first, hanging files are skipped instead of waited for. If the drive drops
+out, hypersuite lets it cool down, waits for it to come back and continues by
+itself; after the first drop-out it takes the break **before** the drive fails
+again.
 
 <!-- pdf:module sort -->
 ### Sort – your library, ready to use
@@ -271,6 +282,26 @@ Windows user folders and are preselected; **Downloads** is off. One click
 switches a folder on or off. **Add folder** adds any other folder. Your
 selection is saved.
 
+**Drives** shows every local drive on its own – internal disks as well as USB
+drives and docks (label, free space and "removable" when hovering). A ticked
+drive is scanned completely, in addition to the selected folders.
+
+**Don't scan** takes folders that are left out with everything below them
+(**Exclude folder…**). Suggested and already switched on are the folders
+hypersuite writes into itself:
+
+| Suggestion | Why |
+|---|---|
+| Sort target | otherwise the finished library would be indexed as a duplicate of its own originals |
+| `hypersuite` folder | libraries of earlier runs on every drive |
+| Database folder | the index itself and its working files |
+| Rescue folder | copies from forensic mode (chapter 5.5) |
+| Photo library | library folder of *Apply plan* (photos, under Advanced) |
+
+One click switches a suggestion off; the choice is saved. If a folder you want
+to scan lies **inside** a suggestion – the rescue folder itself, for example –
+that suggestion does not apply and is greyed out.
+
 #### 5.2 The database
 
 The index of all files is a database file. hypersuite creates it
@@ -310,7 +341,7 @@ regularly is the intended way to keep the index up to date.
 | | Follow links/junctions | off by default, to avoid loops |
 | | Re-hash everything | check every file again – detects creeping data corruption |
 | | Online-only files (OneDrive) | **skip**: record only name, size and date, download nothing; **download and hash**: read in full |
-| | Exclude folders | folder names skipped everywhere, e.g. `node_modules, .git` |
+| | Exclude folders | folder **names** skipped everywhere, e.g. `node_modules, .git` (whole folders: *Don't scan*, chapter 5.1) |
 | | Threads | number of parallel readers; blank = automatic |
 | Duplicates and reports | Report folder | default `Documents\hypersuite` |
 | | Ignore files smaller than (bytes) | default 4096 bytes |
@@ -323,6 +354,99 @@ regularly is the intended way to keep the index up to date.
 
 The reports are saved as a Markdown file and as a JSON file and delete
 nothing.
+
+#### 5.5 Forensic mode: rescuing data from a failing drive
+
+Some drives only work for a while: they get hot, the USB controller in the
+enclosure gives up, or the dock drops the connection. A normal scan reads every
+file in full and loses track at every drop-out. Forensic mode is built for
+exactly this case – in two steps: **first the list, then the files.**
+
+**Preparation**
+
+- The database and the sort target must be on a **different** drive from the
+  failing one. hypersuite checks this and otherwise blocks the start.
+- Keep the drive as cool as possible (not on a carpet, a fan nearby).
+- Under **Drives**, tick only the failing drive (or use **Add folder** for just
+  the folders on it you need).
+
+**Step 1 – Scan in forensic mode**
+
+![Scan in forensic mode](screenshots/scan-forensic-en.png)
+
+Set **Mode** to **Forensic**. Two settings appear:
+
+| Setting | Meaning |
+|---|---|
+| Cool-down (minutes) | how long the drive rests after a drop-out, default 10 |
+| Restart the USB device … | if the drive does not come back by itself after cooling down, hypersuite restarts its USB connection; Windows asks once for administrator rights |
+
+**Start scan** begins without counting first. Only what Windows keeps in the
+folder listing anyway is read – name, size, date. **No file is opened**, nothing
+is checked, nothing is retried. Every folder read completely is saved at once.
+
+- **A folder hangs?** After 30 seconds it is skipped and noted in the report;
+  the scan goes on.
+- **The drive drops out?** The status line shows **drive cooling down until
+  14:32**, then **waiting for the drive**. hypersuite recognises the drive by
+  its serial number – even if Windows gives it a different letter when it
+  comes back. Once it is back, the scan continues with the next open folder,
+  not from the beginning. If it does not appear, switch the dock off and on.
+- **Window closed, computer restarted?** Next time, Scan shows the card **The
+  forensic scan was interrupted**; **Continue** carries on with the next open
+  folder.
+
+**Step 2 – Rescue the files (in Sort)**
+
+![Rescue in Sort](screenshots/sort-rescue-en.png)
+
+As soon as the database holds a forensic scan, Sort shows the card **Forensic
+scan: <drive>** above the four steps, with the number and size of the listed
+files. **Rescue files** copies them to
+
+```
+<target>\_rescue\<label>-<serial number>\<original path>
+```
+
+– the drive's folder tree, nothing renamed, nothing sorted. This is how the
+rescue works:
+
+- **Small files first.** In every window the drive lasts, as many files as
+  possible get to safety; large videos and images come last.
+- **Skip, don't wait.** If a copy does not move for 20 seconds, it is cancelled
+  and marked *skipped*; the next file starts at once. Several hanging files in
+  a row count as the drive having dropped out.
+- **Cool down and continue by itself.** On a drop-out: cool-down, wait for the
+  drive, USB restart if needed, then on with the next open file.
+- **A break before the next drop-out.** hypersuite remembers how long the drive
+  lasted each time. From the first drop-out on, it takes the cool-down break
+  on its own once 80 % of the shortest stretch so far is reached – before the
+  drive fails again.
+- **Second try.** At the end, every skipped or unreadable file gets exactly one
+  more try.
+- **Pause and continue** at any time. Copied files are never copied twice.
+- **Every copy** is first written as a temporary file, checksummed while it is
+  written, given the original's modification date and only then its real name.
+  Nothing on the failing drive is changed.
+
+The card shows **copied · open · skipped · unreadable**, how often the drive
+dropped out and, during a break, until when it is cooling down. **Open report**
+shows the rescue report (`<target>\_rescue\rescue-report-<serial number>.md`):
+totals, every working stretch with its length and why it ended, and the list
+of all files that could not be rescued.
+
+**Step 3 – Sort what was rescued**
+
+Once the rescue is finished, add the rescue folder in Scan with **Add folder**,
+set **Mode** back to **Normal** and scan it. Now the rescued files are checked
+in full and duplicates are found – and Sort puts them into the library like any
+other source.
+
+> **Limits.** Forensic mode helps with drives that drop out because of heat,
+> a cable, a dock or a USB controller. If a drive clicks, grinds or is no
+> longer recognised at all, it is mechanically damaged: stop using it and hand
+> it to a data recovery service. Files in folders whose listing could not be
+> read are unknown to hypersuite and cannot be rescued.
 
 ### 6. Sort in detail
 
@@ -452,6 +576,16 @@ insurance renewal" also finds the letter in which these words do not appear,
 across languages. Before the first search, run **Rebuild the search index**
 once.
 
+#### 6.7 Rescue from a failing drive
+
+If the database holds a forensic scan, the card **Forensic scan: <drive>**
+appears above the four steps, with **Rescue files**, **Pause** and **Continue
+rescue**. Chapter 5.5 describes how it works and its settings. If the sort
+target is on the drive being rescued, **Rescue files** is blocked – choose
+another drive under **Target**. Sort does not plan the forensic files
+themselves: they have no checksum yet and only become part of the library via
+the rescue folder (step 3 in chapter 5.5).
+
 ### 7. Outbird in detail
 
 ![Outbird](screenshots/mail-en.png)
@@ -513,6 +647,10 @@ command prompt, put `start /wait` in front; in PowerShell, append
 ```bat
 start /wait hypersuite index scan E:\ --db D:\index.db
 start /wait hypersuite index scan --resume
+start /wait hypersuite index scan F:\ --exclude-dir F:\hypersuite --db D:\index.db
+start /wait hypersuite index scan F:\ --forensic --cooldown 600 --usb-restart --db D:\index.db
+start /wait hypersuite index rescue --target E:\Rescue --volume F: --db D:\index.db
+start /wait hypersuite index rescue --target E:\Rescue --status --db D:\index.db
 start /wait hypersuite file plan E:\hypersuite --db D:\index.db
 start /wait hypersuite file apply <PLAN-NUMBER> E:\hypersuite --db D:\index.db
 start /wait hypersuite mail export C:\mail\archive.pst --root-name ""
@@ -533,6 +671,7 @@ reference:
 | Scan reports | `Documents\hypersuite\` |
 | Library | `<drive>:\hypersuite\` or your chosen target |
 | Quarantine | `<target>\.hyperfiler\quarantine\` |
+| Rescued copies (forensic) | `<target>\_rescue\<label>-<serial number>\`, report `<target>\_rescue\rescue-report-<serial number>.md` |
 | Thunderbird backup | `%APPDATA%\Thunderbird\Profiles\outbird-backup-<date>\` |
 
 hypersuite writes nothing to the registry or to *Program Files*. The database
@@ -557,6 +696,11 @@ and, if you like, the database, reports and library.
 | "Thunderbird appears to be running" | quit Thunderbird completely (also from the notification area) |
 | "… already exists in the Thunderbird profile" | keep *Everything under one top-level folder* on, or use a different name |
 | No Thunderbird profile found | install Thunderbird and start it once – or export as mbox |
+| A drive disconnects after a while | use forensic mode (chapter 5.5) |
+| Forensic: "The database is on a drive being scanned" | under **Database**, use **New…** to put a database on another drive |
+| Rescue: **Rescue files** is blocked | the sort target is on the failing drive – choose another **Target** |
+| Rescue: "waiting for the drive" does not move on | switch the dock or USB enclosure off and on; confirm the UAC prompt for the USB restart |
+| Rescue: many files *skipped* | normal with weak sectors; the second pass at the end tries them again, the report lists the rest |
 
 Report problems and ask questions: <https://github.com/namshubs/hypersuite/issues>
 – with the version (`hypersuite --version`) and the text under **Show
