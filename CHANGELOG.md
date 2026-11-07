@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.2.2 — 2026-11-07
+
+- **Help on every element.** Hover for a short text; right click → “Explain…”
+  or F1 for the full explanation with the equivalent command (and “Copy
+  command”). A one-time hint and a “?” menu at the top (short texts can be
+  switched off). `hypersuite help <topic>` prints the same text on the command
+  line, `hypersuite help --topics` lists them. The manual has the full list as
+  Appendix B.
+- **Sort → “Continue later”.** Stops planning without losing what was found:
+  the plan saves what it read to the cache and ends by itself (after 20
+  seconds at most it is ended). The next Plan continues from the cache.
+- **Sort → “Continue later” also while applying.** The current file is
+  finished, then Apply ends; applying again with the same plan continues with
+  the remaining files (`hypersuite file apply … --stop-file <file>`).
+- **Details log can be copied.** A button above the log copies all lines to
+  the clipboard (hundreds of error lines at once).
+- **Opening a large index is fast.** The file count is no longer counted when
+  a window opens (minutes on a hard disk with a multi-gigabyte index); it is
+  counted in the background and remembered, and “Create plan” is available at
+  once. The launcher no longer re-counts every 15 seconds.
+
 ## 2.2.1 — 2026-11-06
 
 **Local AI – no data in, no data out.** To sort documents, hypersuite uses one

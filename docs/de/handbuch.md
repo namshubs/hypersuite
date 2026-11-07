@@ -3,7 +3,7 @@
 **Erfassen · Ordnen · Mails umziehen.** Ihre Dateien und Ihre Outlook-Mails aus
 einer Windows-Umgebung – aufbereitet, geordnet und sofort wieder nutzbar.
 
-Version 2.2.1 · November 2026 · für Windows 10 und 11 (64 Bit)
+Version 2.2.2 · November 2026 · für Windows 10 und 11 (64 Bit)
 
 <!-- pdf:part -->
 ## Teil I – Was hypersuite für Sie tut
@@ -894,3 +894,376 @@ Get-ChildItem "$env:LOCALAPPDATA\hypersuite\runtime" -Recurse -Filter *.exe |
 ```
 
 hypersuite funktioniert mit diesen Regeln unverändert – es braucht das Netz nicht.
+
+
+### Anhang B: Hilfe zu jedem Element und die passenden Befehle
+
+Jedes Element der Fenster hat eine Erklärung: Mit der Maus darüberfahren zeigt
+einen Kurztext, **Rechtsklick → „Erklärung…“** oder **F1** öffnet die
+ausführliche Hilfe mit dem entsprechenden Befehl und „Befehl kopieren“. Das
+Fragezeichen oben rechts erklärt das und schaltet die Kurztexte ab. Auf der
+Befehlszeile gibt `hypersuite help <Thema>` denselben Text (englisch),
+`hypersuite help --topics` listet alle Themen; die Schalter eines Befehls zeigt
+sein `--help`. Die Texte unten sind dieselben wie im Programm.
+
+**Wie viele Seiten je Scan per Texterkennung (OCR) gelesen werden. Leer = aus (Standard).**  
+OCR liest Text aus Bildern und eingescannten PDFs, damit Dokumente nach Inhalt (Datum, Absender) einsortiert werden können. Das kostet je Seite etwa eine bis mehrere Sekunden und verlängert das Planen bei vielen Scans deutlich. Leer lässt OCR aus: dann zählt nur Text, der schon in der Datei steckt. 1 bis 3 reicht meist für Briefkopf und Datum. Schon gelesene Seiten kommen beim nächsten Planen aus dem Zwischenspeicher. Alles läuft auf deinem Rechner, nichts wird gesendet.
+
+Befehl: `hypersuite file plan <Ziel> --ocr-pages N`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Reorganisieren sortiert in die Bibliotheksstruktur, Spiegeln kopiert die Quellstruktur 1:1 ins Archiv, ohne Inhalte zu lesen.**  
+Reorganisieren (Standard) ordnet jede Datei nach Art, Datum und Inhalt in die Bibliothek ein. Spiegeln überspringt jede Einordnung: Alles landet unter Archive/&lt;Laufwerks-Seriennummer>/&lt;ursprünglicher Pfad>, die Quellstruktur bleibt erhalten. Dabei werden keine Dokumente gelesen, kein OCR und keine KI verwendet, Spiegeln ist deshalb viel schneller. In beiden Fällen ist es zunächst nur ein Plan: erst „Ausführen“ kopiert.
+
+Befehl: `hypersuite file plan <Ziel> --db <DB> --mirror`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Deine bekannten Absender, Kunden und Dokumentinhaber (TOML). Hilft, Dokumente richtig zuzuordnen. Nur für Dokumente.**  
+Die Datei nennt Lieferanten, Kunden und Personen, damit Dokumente nach ihnen eingeordnet werden können. Ohne die Datei ordnet Planen nur nach den eingebauten Regeln. Nur die Klasse Dokumente nutzt sie.
+
+Befehl: `hypersuite file plan <Ziel> --db <DB> --entities entities.toml`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Tabelle Filmtitel → Genre (TOML). Ein Film ohne Eintrag bekommt keinen Genre-Ordner, es wird nie geraten. Nur für Videos.**  
+Mit dieser Tabelle legt Planen Filme in Genre-Unterordner. Fehlt ein Film in der Tabelle, bekommt er keinen Genre-Ordner. Es wird nie ein Genre geraten. Nur die Klasse Videos nutzt die Tabelle.
+
+Befehl: `hypersuite file plan <Ziel> --db <DB> --genres genres.toml`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Das mitgelieferte KI-Modell rettet Dokumente, die die Regeln sonst in den Eingang schicken würden. Braucht labels.jsonl, läuft lokal.**  
+Das mitgelieferte Embedding-Modell vergleicht den Text eines Dokuments mit deinen gelabelten Beispielen aus labels.jsonl und ordnet es danach ein, wenn die Regeln allein es in den Eingang (Inbox) schicken würden. Es wird nichts trainiert und nichts gesendet: Das Modell läuft auf deinem Prozessor und lernt nichts dazu. Ohne labels.jsonl gibt es keine Beispiele, Planen rechnet die KI dann gar nicht erst.
+
+Befehl: `hypersuite file plan <Ziel> --db <DB> --model --labels labels.jsonl`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Beispiel-Datei (JSON Lines), die „inbox-review“ geschrieben hat. Nur mit KI-Sortierung. Standard: hyperfiler-labels.jsonl im aktuellen Ordner.**  
+Das sind die Beispiele, mit denen die KI vergleicht. Du erzeugst sie mit „inbox-review“, indem du Dokumente selbst einordnest. Bleibt das Feld leer, nimmt Planen die Datei hyperfiler-labels.jsonl aus dem aktuellen Ordner, falls sie dort liegt.
+
+Befehl: `hypersuite file plan <Ziel> --db <DB> --model --labels labels.jsonl`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Nach so vielen Sekunden wird ein Dokument aufgegeben und unverändert ins Archiv gelegt. 0 = kein Limit, Standard 120.**  
+Manche Dateien hängen im Parser oder brauchen beim OCR sehr lange. Nach dem Limit gibt Planen das Dokument auf: Es kommt unverändert ins Archiv und steht im Bericht mit dem Vermerk, dass es zu lange gedauert hat. Das Zeitlimit wird im Zwischenspeicher vermerkt. Die anderen Dokumente sind davon nicht betroffen.
+
+Befehl: `hypersuite file plan <Ziel> --db <DB> --file-timeout 120`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Nummer eines früheren Plans (hyperfiler-plan-…), um ihn zu prüfen oder auszuführen, ohne neu zu planen.**  
+Jedes Planen bekommt eine Nummer und schreibt einen Bericht und geplante Aktionen in die Datenbank. Mit der Nummer eines früheren Plans arbeitest du an ihm weiter, ohne neu zu planen. Die Nummer steht im Bericht unter &lt;Ziel>\.hyperfiler\plans\ und in der Zeile unter dem Knopf, wenn ein Plan fertig ist.
+
+Alle Schalter: `hypersuite file --help`
+
+**PST-Dateien (Outlook-Postfächer) im Index werden nicht sortiert, sondern als Mail übernommen: ignorieren, als mbox oder in ein Thunderbird-Profil.**  
+Ignorieren lässt die PST-Dateien, wie sie sind. Als mbox schreibt hypersuite die Mails in das Ziel. In ein Thunderbird-Profil geht den geführten Weg: Thunderbird muss geschlossen sein, das Profil wird gesichert, die Mails werden umgewandelt, geprüft und erst dann in die lokalen Ordner kopiert. Dafür bestätigst du vorher den Hinweis.
+
+Alle Schalter: `hypersuite mail --help`
+
+**Verschiebt die Quellen bestätigter Kopien nach .hyperfiler/quarantine. Löscht nichts; die Kopie wird vorher erneut geprüft.**  
+Nur Quellen, deren Kopie geprüft („verified“) ist, werden verschoben, mit ihrem ursprünglichen relativen Pfad unter &lt;Ziel>\.hyperfiler\quarantine\&lt;Seriennummer>\. Vor jedem Verschieben wird die Kopie noch einmal per Prüfsumme kontrolliert, damit auch die einzige Quelle eines Inhalts sicher ist. Mit „Nur dieser Plan“ gilt es nur für die Quellen des gewählten Plans.
+
+Befehl: `hypersuite file quarantine <Ziel> --db <DB> [--plan <Plan-Nummer>]`  
+Alle Schalter: `hypersuite file quarantine --help`
+
+**ENDGÜLTIG löschen: entfernt Quarantäne-Kopien nach der Wartezeit. Nicht rückgängig zu machen, braucht deine Backup-Bestätigung.**  
+Das ist der einzige Schritt, der sich nicht rückgängig machen lässt. Gelöscht werden nur Quarantäne-Kopien, die mindestens so viele Tage alt sind wie angegeben (Standard 30). Das Backup-Feld ist deine eigene Bestätigung, dass es ein zweites, unabhängiges Backup gibt: Sie wird nicht geprüft, nur protokolliert. Jede Datei wird vor dem Löschen noch einmal per Prüfsumme kontrolliert und bleibt sonst liegen. Einen Probelauf gibt es mit Absicht nicht, sieh dir den Quarantäne-Ordner vorher selbst an.
+
+Befehl: `hypersuite file purge <Ziel> --db <DB> --backup-confirmed "<Text>" [--older-than 30]`  
+Alle Schalter: `hypersuite file purge --help`
+
+**Sucht Dokumente nach Bedeutung statt Stichwort. Nach vielen neuen Dokumenten zuerst den Suchindex neu aufbauen.**  
+Die Suche vergleicht die Bedeutung deines Suchtexts mit der der Dokumente und zeigt die nächsten Treffer (Standard: 10). Dafür braucht sie den Suchindex: Beim ersten Mal und wenn sich der Dokumentbestand deutlich geändert hat, setze das Häkchen und baue ihn neu auf. Das Lesen aller Dokumente kann bei großen Beständen lange dauern. Alles läuft lokal mit dem mitgelieferten Modell.
+
+Befehl: `hypersuite file find "Suchtext" --db <DB>    (Index: hypersuite file find --rebuild --db <DB>)`  
+Alle Schalter: `hypersuite file find --help`
+
+**Hier entsteht die geordnete Bibliothek. Automatisch gewählt; „Ändern“ nimmt einen anderen Ordner.**  
+Das Ziel ist der Ordner, in den später kopiert wird. Beim Planen wird dort nur ein Bericht unter .hyperfiler/plans/ abgelegt, sonst nichts. Am besten liegt das Ziel auf einer anderen Platte als die Quellen und hat genug freien Platz (er steht neben dem Feld). Dieselbe Platte ist erlaubt, es erscheint nur ein Hinweis. Die Quellen werden nie verändert: Ausführen kopiert nur.
+
+Befehl: `hypersuite file plan <Ziel> --db <DB>`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Welche Dateiarten geplant werden. „Sonstiges“ ist aus, bis du es einschaltest.**  
+Fotos, Musik, Dokumente und Videos werden nach Art, Datum und Inhalt einsortiert. „Sonstiges“ (Installer, Archive, Dateien ohne erkennbare Art) wird nie stillschweigend mitgenommen, sondern nur, wenn du es einschaltest; es landet dann unverändert im Archiv. Weniger Arten bedeuten weniger zu lesen und ein schnelleres Planen.
+
+Befehl: `hypersuite file plan <Ziel> --db <DB> --only photo,music,document,video`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Die Index-Datenbank aus dem Scan. Sort liest sie nur; „Vorhandene öffnen…“ wählt eine andere.**  
+Scan schreibt alles, was er gefunden hat (Pfad, Größe, Datum, Prüfsumme), in eine SQLite-Datei. Sort plant aus dieser Datei, ohne die Quellen erneut zu durchsuchen. „Zuletzt benutzt“ listet die letzten Datenbanken, „Neu anlegen“ gibt es nur in Scan. Bei sehr großen Datenbanken auf einer langsamen Platte erscheint die Dateizahl erst nach einer Weile („…“), Planen ist trotzdem sofort möglich. Das Kopieren der Datenbank auf eine SSD beschleunigt das Planen deutlich.
+
+Befehl: `hypersuite index scan <Pfad> --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Schritt 1: entscheidet für jede Datei, wohin sie käme. Es wird nichts kopiert.**  
+Planen liest die Datenbank und, bei Dokumenten, den Inhalt (Text, optional OCR und KI). Geschrieben wird nur der Bericht im Ziel und ein Eintrag pro Datei in der Datenbank. Schon gelesene Dokumente kommen aus dem Zwischenspeicher, ein abgebrochenes Planen geht dort weiter. Bei großen Beständen dauert es Stunden; „Später weitermachen“ hält es an, ohne das Gefundene zu verlieren.
+
+Befehl: `hypersuite file plan <Ziel> --db <DB>`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Schritt 2: zeigt, was der Plan vorhat und warum Dateien im Archiv landen. Liest nur.**  
+Kontrollieren fasst den Plan zusammen (nach Art und Stand) und nennt Stichproben, warum Dateien in das Archiv („Inbox“) kamen. Das ist das Tor vor dem Kopieren: Erst wenn dir der Plan passt, geht es weiter. Der Bericht (Markdown und JSON) lässt sich über die Knöpfe daneben öffnen.
+
+Befehl: `hypersuite file review --db <DB> <Plan-Nummer> <Ziel>`  
+Alle Schalter: `hypersuite file review --help`
+
+**Schritt 3: kopiert die Dateien ins Ziel und prüft jede Kopie. Quellen bleiben unberührt.**  
+Ausführen kopiert jede geplante Datei in eine Zwischendatei, prüft die Prüfsumme und benennt sie erst dann um. Eine Quelle, die sich seit dem Planen geändert hat, schlägt fehl, statt still kopiert zu werden. Es ist gefahrlos unterbrechbar: Derselbe Plan setzt dort fort, wo er stand. Quellen werden nie verschoben oder gelöscht, das ist ein eigener, späterer Schritt („Quarantäne“).
+
+Befehl: `hypersuite file apply --db <DB> <Plan-Nummer> <Ziel>`  
+Alle Schalter: `hypersuite file apply --help`
+
+**Schritt 4: prüft alle kopierten Dateien im Ziel noch einmal auf Unversehrtheit. Liest nur.**  
+Prüfen berechnet die Prüfsumme jeder bereits bestätigten Kopie neu und vergleicht sie mit der beim Kopieren gespeicherten. So fallen Bitfehler oder später beschädigte Dateien auf. Es wird nichts repariert oder gelöscht; was damit geschieht, entscheidest du. Das Lesen des ganzen Ziels dauert bei großen Bibliotheken lange.
+
+Befehl: `hypersuite file verify --db <DB> <Ziel>`  
+Alle Schalter: `hypersuite file verify --help`
+
+**Hält das Planen an. Das bisher Gelesene bleibt im Zwischenspeicher.**  
+Der Knopf beendet den laufenden Plan. Gelesener Text und berechnete KI-Vektoren liegen im Zwischenspeicher (alle 200 Dokumente oder 30 Sekunden gesichert); höchstens diese letzten Sekunden gehen verloren. Beim nächsten „Plan erstellen“ kommt alles Gelesene von dort, das Planen geht also praktisch dort weiter, wo es stand. Der Plan sichert zuerst und beendet sich dann selbst (der Knopf zeigt „Wird angehalten …“); hängt er in einer Datei fest, wird er nach 20 Sekunden beendet.
+
+Alle Schalter: `hypersuite file plan --help`
+
+**Wie viele Dokumente gleichzeitig gelesen werden. Wirkt sofort, auch während des Planens.**  
+Mehr Leser nutzen mehr Prozessorkerne und machen das Planen schneller, belasten den Rechner aber stärker. Der Standard ist die Hälfte der Kerne. Der Plan fällt bei jeder Zahl gleich aus. Der Regler schreibt die Zahl in eine Datei, die der laufende Plan neu liest (--jobs-file), du musst also nicht neu starten. Im Spiegel-Modus wird nichts gelesen, der Regler ist dort aus.
+
+Befehl: `hypersuite file plan <Ziel> --db <DB> --jobs 8`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Zeigt, wie stark der Prozessor ausgelastet ist und wie viel davon das Planen verbraucht.**  
+Der äußere Wert ist die Auslastung des ganzen Rechners, der innere Teil gehört dem Planen samt seinen Hilfsprogrammen (OCR). Liegt der Zeiger weit unter dem Maximum, kannst du den Regler „Tempo“ erhöhen; ist der Rechner anderweitig ausgelastet, senke ihn.
+
+
+**Eine Datei wird schon lange gelesen. Nach dem Zeitlimit kommt sie unverändert ins Archiv.**  
+Manche Dateien (riesige oder beschädigte PDFs, lange OCR) brauchen ungewöhnlich lange. Nach dem Zeitlimit je Dokument (Advanced, Standard 120 Sekunden) wird die Datei nicht weiter gelesen, sondern landet mit dem Vermerk „zu lange gelesen“ im Archiv; das Planen läuft weiter. Mit 0 gibt es kein Limit, dann kann eine einzelne Datei das Planen sehr lange aufhalten.
+
+Befehl: `hypersuite file plan <Ziel> --db <DB> --file-timeout 120`  
+Alle Schalter: `hypersuite file plan --help`
+
+**Setzt die Einstellungen von Sort auf die Standardwerte zurück.**  
+Gilt nur für die Einstellungen in diesem Fenster (Ziel, Dateiarten, Modus, Dateien, OCR, KI, Zeitlimit, Tempo usw.). Weder Datenbank noch Pläne, Kopien oder Berichte werden verändert oder gelöscht.
+
+
+**Welche Ordner durchsucht werden. Ohne eigene Wahl werden die Ordner deines Benutzers genommen.**  
+Die Häkchen stehen für Ordner wie Dokumente, Bilder, Musik; „Ordner hinzufügen“ ergänzt beliebige weitere. Solange du nichts änderst, bleibt die Auswahl automatisch (Chip „Auto“). Scan liest nur Metadaten und Prüfsummen, ändert aber keine Datei. Der Scan merkt sich, was sich nicht geändert hat; wiederholte Läufe sind deshalb viel schneller.
+
+Befehl: `hypersuite index scan <Pfad> [<Pfad> …] --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Ganze Laufwerke scannen. Fest eingebaute und angesteckte Laufwerke stehen zur Wahl.**  
+Jedes Laufwerk, das Windows gerade kennt, erscheint als Chip mit freiem und gesamtem Platz im Hinweis. Wechsellaufwerke (USB) sind gekennzeichnet. Ein Laufwerk wird an seiner Seriennummer erkannt, nicht am Buchstaben: derselbe Stick gilt auch unter anderem Buchstaben als derselbe. Ist „Alle Laufwerke“ gesetzt (Advanced), ist diese Auswahl gesperrt.
+
+Befehl: `hypersuite index scan E:\ F:\ --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Ordner, die nie betreten werden – samt allem darin. Voreingestellt sind sinnvolle Ausnahmen.**  
+Die Chips sind Vorschläge: das Sort-Ziel, der hypersuite-Ordner, der Ordner der Datenbank, Rettungsordner und die Fotobibliothek – also Ordner, die hypersuite selbst anlegt und die nicht erneut gescannt werden sollen. Abwählen heißt: doch scannen. „Ordner ausschließen…“ nimmt weitere auf. Ein Ordner wird nicht einmal geöffnet, das spart Zeit und schützt vor gesperrten Ordnern. Namen wie node_modules schließt das Feld „Ausschließen“ in Advanced aus.
+
+Befehl: `hypersuite index scan <Pfad> --exclude-dir <Ordner> --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Normal scannt wie gewohnt. Forensik ist für Laufwerke, die immer wieder ausfallen.**  
+Der Forensik-Modus liest zuerst nur die Ordner und merkt sich, wo Dateien stehen, dann die Inhalte: kleine zuerst, defekte Stellen werden übersprungen. Fällt das Laufwerk aus (Hitze, wackeliges USB), pausiert der Scan, wartet die „Abkühlzeit“ ab (im Feld in Minuten, im Befehl in Sekunden) und macht allein weiter. Optional wird das USB-Gerät neu gestartet (nur mit Windows-Rückfrage). Es gibt keine Vorab-Zählung. Die Datenbank darf nicht auf dem gescannten Laufwerk liegen. Gerettete Dateien kopiert Sort („Rettung“).
+
+Befehl: `hypersuite index scan <Pfad> --forensic --cooldown <Sekunden> --usb-restart --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Startet den Scan. Er liest nur und ändert keine Datei. Ein abgebrochener Scan lässt sich fortsetzen.**  
+Vorher wird, wenn möglich, gezählt, damit Fortschritt und Restzeit stimmen („Ohne Zählen starten“ überspringt das). Danach steht neben dem Knopf, wie viel Platz die Datenbank etwa braucht und wie viel frei ist. Bricht der Scan ab (Fenster zu, Stromausfall), erscheint beim nächsten Öffnen eine Karte „Fortsetzen“; fertige Dateien werden nicht noch einmal angefasst.
+
+Befehl: `hypersuite index scan <Pfad> --db <DB>      (fortsetzen: hypersuite index scan --resume --db <DB>)`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Scannt jedes angeschlossene lokale Laufwerk statt einer Ordnerliste.**  
+Praktisch für eine erste Bestandsaufnahme von allem, was gerade angesteckt ist. Netzlaufwerke bleiben außen vor, solange „Netzlaufwerke einbeziehen“ aus ist. Die Auswahl „Was scannen“ und „Laufwerke“ ist dann gesperrt.
+
+Befehl: `hypersuite index scan --all-drives --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Nimmt bei „Alle Laufwerke“ auch Netzlaufwerke mit. Das kann sehr langsam sein.**  
+Nur wirksam zusammen mit „Alle Laufwerke“. Ein Netzlaufwerk wird wie ein lokales Laufwerk gelesen; bei großen Freigaben dauert das lange, und die Prüfsummen laufen über das Netzwerk. hypersuite selbst sendet nichts; es greift nur auf Laufwerke zu, die du in Windows eingebunden hast.
+
+Befehl: `hypersuite index scan --all-drives --include-network --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Folgt Verknüpfungen (Symlinks, Junctions) in andere Ordner. Standard: aus.**  
+Aus ist sicher: Verknüpfungen, die im Kreis zeigen, würden sonst endlos laufen, und derselbe Inhalt würde mehrfach gezählt. Einschalten nur, wenn deine Daten wirklich über Verknüpfungen erreichbar sind.
+
+Befehl: `hypersuite index scan <Pfad> --follow-symlinks --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Berechnet jede Prüfsumme neu, auch wenn Größe und Datum gleich sind. Dauert lange.**  
+Normalerweise übernimmt ein erneuter Scan die gespeicherte Prüfsumme einer unveränderten Datei, das macht ihn schnell. Mit diesem Schalter wird alles neu gelesen. Sinnvoll, wenn du stille Datenfehler („Bitfäule“) vermutest, die Größe und Datum nicht verraten.
+
+Befehl: `hypersuite index scan <Pfad> --rehash-all --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Online-Dateien (OneDrive, Nextcloud) überspringen oder herunterladen. Standard: überspringen.**  
+„Überspringen“ merkt sich nur die Metadaten und öffnet die Datei nie, damit der Sync-Client nichts herunterlädt und sich nicht mit Fehlerfenstern meldet. „Herunterladen“ liest sie wie jede andere Datei: vollständige Prüfsummen, aber Zeit, Datenverkehr und lokaler Platz werden verbraucht, und ein kranker Sync-Client kann den Scan blockieren.
+
+Befehl: `hypersuite index scan <Pfad> --cloud-files skip|hydrate --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Ordnernamen, die überall übersprungen werden, durch Komma getrennt.**  
+Gilt für jeden Ordner dieses Namens, egal wo er liegt (Groß- und Kleinschreibung egal), im Gegensatz zu „Nicht scannen“, das einen bestimmten Ordner meint. Windows-Verwaltungsordner wie $RECYCLE.BIN und System Volume Information sind immer ausgeschlossen.
+
+Befehl: `hypersuite index scan <Pfad> --exclude node_modules --exclude .git --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Wie viele Dateien gleichzeitig gelesen werden. Leer = automatisch.**  
+Die Automatik passt sich dem Rechner an. Auf einer einzelnen, langsamen Festplatte bringen mehr Threads nichts und können das Lesen sogar verlangsamen; auf SSDs und Netzwerken helfen mehr.
+
+Befehl: `hypersuite index scan <Pfad> --threads <Zahl> --db <DB>`  
+Alle Schalter: `hypersuite index scan --help`
+
+**Ordner für Berichte (Duplikate, Fotoplan usw.). Automatisch gewählt; „Öffnen“ zeigt ihn im Explorer.**  
+Alle Berichte dieses Fensters landen als Markdown-Datei (und meist als JSON) in diesem Ordner. Sie enthalten Pfade deiner Dateien; gib sie nur weiter, wenn du das willst.
+
+Befehl: `hypersuite index dupes --db <DB> -o <Datei.md>`  
+Alle Schalter: `hypersuite index dupes --help`
+
+**Kleinere Dateien werden bei der Duplikat-Suche ignoriert. Leer = alle.**  
+Sehr kleine Dateien (Symbole, Konfigurationsdateien) sind zahlreich und selten interessant; eine Untergrenze macht den Bericht übersichtlich. Gleichheit heißt hier: gleiche Größe und gleiche Prüfsumme (BLAKE3) des ganzen Inhalts, nicht nur gleicher Name.
+
+Befehl: `hypersuite index dupes --db <DB> --min-size <Bytes>`  
+Alle Schalter: `hypersuite index dupes --help`
+
+**Schreibt einen Bericht über doppelte Dateien aus allem, was je gescannt wurde. Löscht nichts.**  
+Findet identische Inhalte über alle gescannten Laufwerke hinweg, auch über Sticks, die heute gar nicht angesteckt sind. Das Ergebnis ist ein Bericht (Markdown und JSON); aufräumen musst du selbst oder mit den späteren Schritten.
+
+Befehl: `hypersuite index dupes --db <DB> -o hyperindex-report.md`  
+Alle Schalter: `hypersuite index dupes --help`
+
+**Zeigt, welche Ordner doppelte Inhalte enthalten – die Einheit, in der man aufräumt. Löscht nichts.**  
+Statt einzelner Dateien listet der Bericht Ordner mit Anzahl, Größe und Datum der doppelten Inhalte. Er nutzt einen vorhandenen Duplikat-Bericht, wenn einer da ist, sonst rechnet er neu (--fresh erzwingt das).
+
+Befehl: `hypersuite index doubles --db <DB> -o doubles.md`  
+Alle Schalter: `hypersuite index doubles --help`
+
+**Ermittelt das Aufnahmedatum und den Ort der Fotos aus den Dateien selbst. Nichts wird gesendet.**  
+Reihenfolge der Quellen: EXIF-Aufnahmedatum, Datum im Dateinamen, Datum im Ordnernamen, zuletzt das Änderungsdatum der Datei (unsicher). Enthalten die Fotos GPS-Daten, wird der Ort über eine eingebaute Ortsdatenbank bestimmt, ohne Netzwerkzugriff. Ergebnisse werden gespeichert, ein erneuter Lauf kostet nur für neue Fotos etwas. „Neu berechnen“ erzwingt alles neu, etwa nach einem Programm-Update.
+
+Befehl: `hypersuite index enrich --db <DB> [--force]`  
+Alle Schalter: `hypersuite index enrich --help`
+
+**Entwurf, wohin jedes Foto in eine datierte Bibliothek käme. Fasst keine Datei an.**  
+Erzeugt plan.md und plan.json. Exakte Duplikate werden erkannt, Fotos ohne sicheres Datum kommen zur manuellen Sichtung in die Quarantäne. Das Dateisystem bleibt unberührt; erst „Ausführen“ kopiert. Dies ist der Foto-Plan von Scan; der umfassende Plan für alle Dateiarten steht in Sort.
+
+Befehl: `hypersuite index plan --db <DB> -o plan.md`  
+Alle Schalter: `hypersuite index plan --help`
+
+**Ordner, unter dem die sortierte Fotobibliothek entsteht.**  
+Die Zielpfade des Plans sind relativ und werden hier eingesetzt. Wähle einen Ordner mit genug freiem Platz, am besten auf einer anderen Platte als die Quellen.
+
+Befehl: `hypersuite index apply --plan plan.json --library-root <Ordner> --db <DB>`  
+Alle Schalter: `hypersuite index apply --help`
+
+**Kopiert die Fotos laut Plan in die Bibliothek und prüft jede Kopie. Die Quelle bleibt unberührt.**  
+Jeder Versuch wird protokolliert, ein unterbrochener Lauf lässt sich gefahrlos wiederholen. Der „Testlauf“ zeigt nur, was passieren würde, und schreibt nichts. Ohne Testlauf musst du bestätigen, dass der Vorgang ausgeführt werden soll. Gelesen wird plan.json, nicht die .md-Datei.
+
+Befehl: `hypersuite index apply --plan plan.json --library-root <Ordner> [--dry-run] --db <DB>`  
+Alle Schalter: `hypersuite index apply --help`
+
+**Macht einen Lauf rückgängig: löscht nur die Dateien, die dieser Lauf selbst angelegt hat.**  
+Die Auftragsnummer steht am Ende jedes Laufs und in dessen JSON-Bericht. Ohne „Wirklich löschen“ werden die betroffenen Dateien nur aufgelistet. Quellen werden nie gelöscht, nur die Kopien im Ziel.
+
+Befehl: `hypersuite index apply --undo <Auftrag> [--force] --db <DB>`  
+Alle Schalter: `hypersuite index apply --help`
+
+**Reduziert doppelte Musik auf eine Kopie je Titel, bevor man sie in beets importiert. Löscht nichts.**  
+Derselbe Titel auf mehreren Sicherungsplatten wird einmal aufgeführt, damit beets die Online-Suche nicht mehrfach bezahlt. beets selbst wird nicht gestartet, nichts wird verschoben oder gelöscht; beets bleibt das Werkzeug, das die Musik ordnet und beschriftet.
+
+Befehl: `hypersuite index prefilter --db <DB> -o beets-import.md`  
+Alle Schalter: `hypersuite index prefilter --help`
+
+**Schaut in die Datenbank: Laufwerke, Gesamtzahlen und aufgezeichnete Pläne. Nur Lesen.**  
+„Laufwerke“ listet jedes je gescannte Laufwerk mit Seriennummer, auch nicht angesteckte. „Zahlen“ zeigt Gesamtwerte, letzte Scans und unterbrochene Scans. „Aktionen“ zeigt die Pläne und ihren Stand; mit einer Plan-Nummer die einzelnen Aktionen. Nichts davon ändert etwas.
+
+Befehl: `hypersuite index volumes|stats|actions --db <DB>`  
+Alle Schalter: `hypersuite index --help`
+
+**Setzt die Einstellungen von Scan auf die Standardwerte zurück.**  
+Betrifft nur die Einstellungen dieses Fensters. Die Datenbank, Berichte und gescannte Daten bleiben, wie sie sind.
+
+
+**Die Outlook-Datei (.pst), die übernommen wird. Sie wird nur gelesen, nie verändert.**  
+„Durchsuchen“ wählt eine Datei; gefundene Kandidaten stehen in der Liste daneben. hypersuite öffnet die PST streng lesend, ohne Outlook. Ob die Datei lesbar ist und wie viele Ordner und Nachrichten sie enthält, steht im Hinweis darunter oder unter „Inhalt prüfen“.
+
+Befehl: `hypersuite mail inspect <PST-Datei>`  
+Alle Schalter: `hypersuite mail --help`
+
+**Ziel der Mails: ein Thunderbird-Profil oder ein eigener Ordner. Das Profil wird vorher gesichert.**  
+Bei einem Profil prüft hypersuite, dass Thunderbird geschlossen ist, sichert das Profil, wandelt die Mails um, prüft das Ergebnis und kopiert erst dann in die „Lokalen Ordner“. Dafür musst du bestätigen, weil dein lebendes Profil verändert wird. „Ändern“ wählt ein anderes Profil, wenn es mehrere gibt. Der mbox-Weg (Advanced) berührt Thunderbird nicht.
+
+Befehl: `hypersuite mail auto <PST-Datei> --profile <Profil>`  
+Alle Schalter: `hypersuite mail auto --help`
+
+**Übernimmt die Mails in Thunderbird. Vorher gibt es eine Sicherung und eine Rückfrage.**  
+Der Ablauf ist geführt: Thunderbird geschlossen? Sicherung des Profils, Umwandlung, Prüfung, Kopie. Mit „Testlauf“ (Advanced) wird alles außer der Änderung des Profils gemacht. Die PST-Datei bleibt unverändert. Der Schalter -y im Befehl beantwortet alle Rückfragen mit Ja (nötig ohne Terminal); in der Oberfläche ersetzt ihn die Bestätigung.
+
+Befehl: `hypersuite mail auto <PST-Datei> --profile <Profil> [--overwrite] [--dry-run] -y`  
+Alle Schalter: `hypersuite mail auto --help`
+
+**Thunderbird-Profil: direkt hineinschreiben. mbox-Ordner: nur Dateien erzeugen, Thunderbird unberührt.**  
+Mit dem mbox-Ordner entsteht eine eigenständige Ordnerstruktur im Thunderbird-Format, die du selbst einbinden oder archivieren kannst. Das ist der risikoärmste Weg, weil kein bestehendes Profil verändert wird. Das Profil kann auch im Befehl `mail export` (ohne Profil) gewählt werden.
+
+Befehl: `hypersuite mail auto <PST> --profile <Profil>      |      hypersuite mail export <PST> --output <Ordner>`  
+Alle Schalter: `hypersuite mail --help`
+
+**Packt alles unter einen Oberordner, damit mehrere PSTs ihre „Posteingang“-Ordner nicht vermischen.**  
+Ohne Oberordner würden zwei PST-Dateien im selben Profil ihre gleichnamigen Ordner (Posteingang, Gesendet) zusammenwerfen. Leer lassen heißt: Name der PST-Datei. Im Befehl bedeutet --root-name "" ebenfalls den Dateinamen.
+
+Befehl: `hypersuite mail auto <PST> --root-name "<Name>"`  
+Alle Schalter: `hypersuite mail auto --help`
+
+**Erlaubt, vorhandene Postfächer oder Ordner mit gleichem Namen zu ersetzen. Standard: aus.**  
+Ohne den Schalter bricht die Übernahme ab, statt etwas Vorhandenes zu überschreiben. Einschalten nur, wenn du genau das willst, etwa um einen früheren, unvollständigen Versuch zu ersetzen.
+
+Befehl: `hypersuite mail auto <PST> --overwrite`  
+Alle Schalter: `hypersuite mail auto --help`
+
+**Probelauf: macht alles außer dem Schreiben ins Profil und zeigt, was passieren würde.**  
+Gut als erster Versuch bei einer großen PST. Das Profil wird nicht verändert und es gibt keine Rückfrage zum Profil. Hat der Testlauf Fehler gemeldet, sind sie vor dem echten Lauf zu klären.
+
+Befehl: `hypersuite mail auto <PST> --dry-run`  
+Alle Schalter: `hypersuite mail auto --help`
+
+**Startet Thunderbird nach der Übernahme. Nur beim Profil-Ziel.**  
+Praktisch, um das Ergebnis gleich zu prüfen. Im Befehl ist es umgekehrt: --no-start verhindert den Start.
+
+Befehl: `hypersuite mail auto <PST> --no-start`  
+Alle Schalter: `hypersuite mail auto --help`
+
+**Liest Ordnerstruktur und Nachrichtenzahlen der PST. Schreibt nichts.**  
+Ein schneller Test, ob die Datei lesbar ist, bevor du übernimmst. Beschädigte oder passwortgeschützte PSTs fallen hier auf.
+
+Befehl: `hypersuite mail inspect <PST-Datei>`  
+Alle Schalter: `hypersuite mail inspect --help`
+
+**Setzt die Optionen von Mail auf die Standardwerte zurück. Die gewählte PST bleibt.**  
+Betrifft nur Einstellungen dieses Fensters. Weder Thunderbird noch bereits übernommene Mails werden angefasst.
+
+
+**Entpackt die eingebauten Werkzeuge (KI-Modell, PDF, OCR, Audio) in einen lokalen Ordner.**  
+Alles, was hypersuite braucht, steckt in der Exe und wird beim ersten Gebrauch unter %LOCALAPPDATA%\hypersuite\runtime entpackt. Es wird nichts heruntergeladen und nichts gesendet. Jede entpackte Datei wird gegen eine Prüfsumme geprüft.
+
+Befehl: `hypersuite tools`  
+Alle Schalter: `hypersuite tools --help`
+
+**Prüft jede entpackte Datei gegen ihre SHA-256-Prüfsumme.**  
+Zeigt, ob eine Datei beschädigt wurde oder fehlt, etwa nach einem Festplattenfehler oder wenn ein Virenscanner eingegriffen hat. Bei einem Fehler hilft „Neu entpacken“.
+
+Befehl: `hypersuite tools --verify`  
+Alle Schalter: `hypersuite tools --help`
+
+**Löscht die entpackte Kopie der Werkzeuge und entpackt sie neu. Eigene Daten bleiben.**  
+Betroffen ist nur der Entpack-Ordner (Anzeige „Entpackt nach“). Datenbanken, Pläne, Berichte und der Zwischenspeicher liegen woanders und bleiben unberührt. Das Neuentpacken dauert wenige Sekunden.
+
+Befehl: `hypersuite tools --reset`  
+Alle Schalter: `hypersuite tools --help`
+
+**Zeigt, ob die eingebauten Werkzeuge bereit sind. Grün = alles entpackt und nutzbar.**  
+Die Werkzeuge (KI-Modell, PDFium, Tesseract, fpcalc) sind in der Exe enthalten. Ein Klick öffnet die Detailansicht mit Prüfen und Neu entpacken. Das Programm hat keine Netzwerkfunktion und sendet nichts.
+
+Befehl: `hypersuite tools`  
+Alle Schalter: `hypersuite tools --help`
+
