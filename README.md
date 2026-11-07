@@ -4,7 +4,7 @@
 on your drives, sorts them into one clean library, and moves Outlook mailboxes
 to Thunderbird.
 
-![The hypersuite launcher](docs/screenshots/launcher-en.png)
+![The hypersuite launcher](docs/screenshots/Version-2-2-2-Startscreen.jpg)
 
 | App | What it does |
 |---|---|
