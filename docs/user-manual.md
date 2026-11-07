@@ -3,7 +3,7 @@
 **Index · Organise · Move mail.** Your files and your Outlook mail from a
 Windows machine – prepared, put in order and ready to use straight away.
 
-Version 2.2.0 · November 2026 · for Windows 10 and 11 (64-bit)
+Version 2.2.1 · November 2026 · for Windows 10 and 11 (64-bit)
 
 <!-- pdf:part -->
 ## Part I – What hypersuite does for you
@@ -475,6 +475,30 @@ preselected.
 finished copies are recognised. If a source file has changed since planning,
 it fails instead of being copied wrongly – plan again in that case.
 
+**Planning large collections** (from 2.2.1). Plan reads every document – scans
+with text recognition – and can therefore take hours. While it runs, Sort shows:
+
+![Plan running: step, time left, speed and speedometer](screenshots/sort-plan-en.png)
+
+- **Step x of n** (photos, music, documents, videos, other data, saving the
+  plan) with a bar, file count and estimated time left, plus the file being read
+  right now. If a file takes longer than 30 seconds, a note appears – Plan is
+  still working, it has not hung.
+- **Speed:** a slider from 1 up to the number of your processor cores (default:
+  half). That many documents are read at once. The slider takes effect at once,
+  also while Plan runs; the result is always the same, only the time changes.
+  Next to it a **speedometer** shows the CPU load of the whole computer (needle)
+  and Plan's share of it (coloured band), with a line like "4 reading · 0 AI ·
+  sorting waits" below.
+- **Continuing:** Plan remembers what it has read
+  (`%LOCALAPPDATA%\hyperfiler\plan-cache.db`, by file content). If Plan is
+  cancelled, the computer crashes or the power fails, just click **Make plan**
+  again: what was already read is skipped. A second plan with other settings is
+  much faster for the same reason.
+- **Time limit per document** (under *Advanced*, default 120 seconds): a
+  document that takes longer goes to the Archive unchanged and is listed in the
+  report ("took too long to read"), instead of holding up the whole plan.
+
 #### 6.3 Library layout
 
 ```
@@ -676,7 +700,10 @@ reference:
 
 hypersuite writes nothing to the registry or to *Program Files*. The database
 contains the names and locations of your files, but no content – treat it
-like a table of contents of your drives.
+like a table of contents of your drives. The text read from your documents is
+kept by Plan in `%LOCALAPPDATA%\hyperfiler\plan-cache.db`, so it can continue
+after a cancel; you may delete that file at any time. None of it leaves your
+computer – hypersuite has no network function (Appendix A).
 
 **Uninstalling:** delete `hypersuite.exe`, delete `%LOCALAPPDATA%\hypersuite\`
 and, if you like, the database, reports and library.
@@ -750,3 +777,96 @@ and signing the Contributor Agreement. Details: `CONTRIBUTING.md` and
 `CONTRIBUTOR-AGREEMENT.md` in the project's `.github` folder.
 
 Project: <https://github.com/namshubs/hypersuite>
+
+### Appendix A: The AI in hypersuite – built in, local, no connection to the outside
+
+**In short:** hypersuite has no network function at all. Everything the program
+reads from your files – names, checksums, text, OCR results, AI calculations –
+stays on your computer. There is no cloud, no account, no telemetry, no update
+check and no crash reporting.
+
+#### Which AI
+
+hypersuite uses **one single AI model: multilingual-e5-small** (developed by
+Microsoft Research, published as `intfloat/multilingual-e5-small`, MIT licence),
+in its compact int8 form (`Xenova/multilingual-e5-small`, about 118 MB).
+
+It is **not a chatbot and not a language model that writes text**. It is a
+so-called embedding model: it turns the beginning of a document (at most 512
+word pieces) into 384 numbers. Documents with similar content get similar
+numbers. That is all it can do – it does not generate text, answer questions or
+learn anything new.
+
+#### How it is built in
+
+- The model file is **inside `hypersuite.exe`**. On the first start it is
+  unpacked with the other tools into `%LOCALAPPDATA%\hypersuite\runtime\` and
+  checked by SHA-256.
+- It runs on **tract**, a computation library compiled into the program. There
+  is no separate AI service, no background server and no graphics driver
+  involved.
+- The model is used **only** in Sort → Plan, **only** when "AI document
+  sorting" is switched on under *Advanced*, **only** for documents the fixed
+  rules cannot place with confidence, and **only** if you have labelled
+  documents yourself (`labels.jsonl`). It then compares an uncertain document
+  with your labelled examples ("nearest neighbours"). Without your labels, Plan
+  does not run the AI at all.
+- The model is **never trained and never changed** – it learns nothing. After
+  a run it knows nothing about your documents; it is the same file as before.
+  Your labels stay in your own file.
+
+Also built in and also purely local: **Tesseract** (text recognition in scanned
+PDFs, seven languages), **PDFium** (renders PDF pages as images for text
+recognition) and **fpcalc** (acoustic fingerprints of music – only computed and
+compared, never looked up in an online database).
+
+#### Why what is read cannot leave the program
+
+- **No network code:** hypersuite, hyperindex, hyperfiler and Outbird contain
+  no part that opens an internet or network connection – no HTTP request, no
+  sockets. The tools run as local processes and are only handed local files.
+- **No hidden downloads:** online-only placeholders of OneDrive and similar
+  services are never opened – otherwise Windows would fetch them from the
+  cloud.
+- **Network drives only if you ask:** Scan reads a NAS or network drive only
+  when you explicitly include it. That is reading files in your own network;
+  hypersuite sends nothing out.
+- **A note for honesty:** the bundled Tesseract package (Windows build by UB
+  Mannheim) contains the library `libcurl`, because Tesseract itself *could*
+  also load images from a web address. hypersuite only ever hands Tesseract
+  local image files; that ability is never used.
+- **Checked (version 2.2.1):** the source code of all four parts, plus a
+  measurement during a Plan run with text recognition and AI – 20 processes
+  involved, **zero** network connections.
+
+#### Where read content is stored
+
+| File | Content |
+|---|---|
+| `index.db` (your database) | names, locations, sizes, dates and checksums of your files, the plans – no file content |
+| `%LOCALAPPDATA%\hyperfiler\plan-cache.db` | **the text read from your documents** (OCR included) and its AI numbers – so Plan can continue |
+| `%LOCALAPPDATA%\hyperfiler\fingerprints.db` | acoustic fingerprints of music |
+
+All three are on your computer only. You may delete `plan-cache.db` and
+`fingerprints.db` at any time; Plan then reads the documents again next time.
+
+#### Check it yourself, and enforce it
+
+- **Check:** Resource Monitor (`resmon`) → *Network* tab. While hypersuite runs,
+  neither `hypersuite.exe` nor `tesseract.exe` or `fpcalc.exe` appears under
+  *Network Activity* or *TCP Connections*.
+- **Enforce:** to make it technically certain as well, block the programs in
+  Windows Firewall for outgoing connections (PowerShell as administrator, adjust
+  the path to the exe):
+
+```powershell
+New-NetFirewallRule -DisplayName "hypersuite: no network" `
+    -Direction Outbound -Action Block -Program "C:\path\to\hypersuite.exe"
+Get-ChildItem "$env:LOCALAPPDATA\hypersuite\runtime" -Recurse -Filter *.exe |
+    ForEach-Object {
+        New-NetFirewallRule -DisplayName "hypersuite: no network ($($_.Name))" `
+            -Direction Outbound -Action Block -Program $_.FullName
+    }
+```
+
+hypersuite works unchanged with these rules – it does not need the network.

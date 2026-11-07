@@ -2,8 +2,15 @@
 
 **Erfassen · Ordnen · Mails umziehen** – ein Windows-Programm, das alle
 Dateien auf deinen Laufwerken erfasst, sie in eine saubere Bibliothek ordnet
-und Outlook-Postfächer nach Thunderbird bringt. Alles läuft lokal; hypersuite
-baut keine Netzwerkverbindungen auf.
+und Outlook-Postfächer nach Thunderbird bringt.
+
+**Deine Daten verlassen deinen Rechner nicht.** hypersuite hat keinerlei
+Netzwerkfunktion – keine Cloud, kein Konto, keine Telemetrie, keine
+Update-Prüfung. Die KI (multilingual-e5-small, ein kleines lokales
+Embedding-Modell, kein Chatbot), die Texterkennung, die PDF-Darstellung und die
+Musik-Fingerabdrücke stecken in der einen Exe und laufen lokal; was sie lesen,
+bleibt auf deiner Platte. Wie die KI eingebaut ist und wie du das selbst
+prüfen oder per Firewall erzwingen kannst: Anhang A im [Handbuch](handbuch.md).
 
 Die Oberfläche gibt es auf Deutsch und Englisch (`DE | EN` in jedem Fenster).
 Ausführlich: das [Handbuch](handbuch.md) – auch als gestaltetes [PDF](hypersuite-handbuch.pdf) – und die englische [Documentation](../README.md).

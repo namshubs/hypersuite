@@ -1,5 +1,40 @@
 # Changelog
 
+## 2.2.1 — 2026-11-06
+
+**Local AI – no data in, no data out.** To sort documents, hypersuite uses one
+local AI model: **multilingual-e5-small** (Microsoft Research, MIT licence), a
+small embedding model – not a chatbot, it writes no text. It is built into the
+exe and runs on your own processor. hypersuite is hardened by design: it has no
+network function at all – no downloads, no updates, no telemetry, no cloud, no
+account. Nothing comes in from outside and nothing that was read goes out;
+checked in the source code and measured during a run with OCR and AI: zero
+network connections. **The AI learns nothing:** the model is never trained or
+changed, so after a run it knows nothing about your documents. What Plan has
+read stays only in a local cache file on your own disk, which you can delete at
+any time. Appendix A of the user manual explains how the AI is built in and how
+to check this yourself or enforce it with a firewall rule.
+
+- **Sort → Plan shows where it is.** Step x of n (photos, music, documents,
+  videos, other data, saving the plan), a bar with files done and time left,
+  the file being read right now, and a note when one file takes long.
+- **Plan continues instead of starting over.** What Plan has read (text,
+  OCR, AI) is kept in a cache (`%LOCALAPPDATA%\hyperfiler\plan-cache.db`, by
+  file content). After a cancel, a crash or a power cut, Plan skips what it
+  already read; a second Plan with other settings is much faster too.
+- **Plan reads several documents at once.** A speed slider in the Plan step
+  (1 up to all cores, default half) — it can be moved while Plan runs. A
+  speedometer shows the computer's CPU load and Plan's share of it. On a
+  test with scanned PDFs, 4 at once was 3× faster, 8 at once 4×.
+- **Time limit per document** (default 120 s, under Advanced): a document
+  that takes longer is copied unchanged into the Archive and listed in the
+  report, instead of holding up the whole plan.
+- **Fix: the AI step could crash a large Plan at the very end.** All
+  documents were embedded in one block, untruncated. Now in small batches,
+  cut to the model's 512 tokens, and only for documents the AI can actually
+  help with; without your own labels it is skipped entirely.
+- Verify shows a progress bar too.
+
 ## 2.2.0 — 2026-11-05
 
 - **Scan: drives one by one.** Every local drive — fixed and removable (USB

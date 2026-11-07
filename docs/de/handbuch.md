@@ -3,7 +3,7 @@
 **Erfassen · Ordnen · Mails umziehen.** Ihre Dateien und Ihre Outlook-Mails aus
 einer Windows-Umgebung – aufbereitet, geordnet und sofort wieder nutzbar.
 
-Version 2.2.0 · November 2026 · für Windows 10 und 11 (64 Bit)
+Version 2.2.1 · November 2026 · für Windows 10 und 11 (64 Bit)
 
 <!-- pdf:part -->
 ## Teil I – Was hypersuite für Sie tut
@@ -491,6 +491,31 @@ vorausgewählt.
 fertige Kopien werden erkannt. Hat sich eine Quelldatei seit dem Planen
 geändert, schlägt sie fehl, statt falsch kopiert zu werden – planen Sie dann neu.
 
+**Planen bei großen Beständen** (ab 2.2.1). Planen liest jedes Dokument – bei
+Scans mit Texterkennung – und kann darum Stunden dauern. Während es läuft, zeigt
+Sort:
+
+![Planen läuft: Schritt, Restzeit, Tempo und Tacho](../screenshots/sort-plan-de.png)
+
+- **Schritt x von n** (Fotos, Musik, Dokumente, Videos, Sonstiges, Plan
+  speichern) mit Balken, Dateizahl und geschätzter Restzeit, dazu die Datei, die
+  gerade gelesen wird. Braucht eine Datei länger als 30 Sekunden, erscheint ein
+  Hinweis – Planen arbeitet dann weiter, es hängt nicht.
+- **Tempo:** ein Schieberegler von 1 bis zur Zahl Ihrer Prozessorkerne
+  (Standard: die Hälfte). So viele Dokumente liest Planen gleichzeitig. Der
+  Regler wirkt sofort, auch während Planen läuft; das Ergebnis ist immer
+  dasselbe, nur die Dauer ändert sich. Daneben zeigt ein **Tacho** die
+  CPU-Last des ganzen Rechners (Nadel) und den Anteil von Planen (farbiger
+  Bogen), darunter z. B. „4 lesen · 0 KI · Sortieren wartet“.
+- **Fortsetzen:** Was Planen gelesen hat, merkt es sich
+  (`%LOCALAPPDATA%\hyperfiler\plan-cache.db`, nach Dateiinhalt). Wird Planen
+  abgebrochen, stürzt der Rechner ab oder fällt der Strom aus, starten Sie
+  einfach erneut **Plan erstellen**: Schon Gelesenes wird übersprungen. Auch ein
+  zweiter Plan mit anderen Einstellungen geht dadurch viel schneller.
+- **Zeitlimit je Dokument** (unter *Advanced*, Standard 120 Sekunden): Ein
+  Dokument, das länger braucht, kommt unverändert ins Archiv und steht im
+  Bericht („took too long to read“), statt das ganze Planen aufzuhalten.
+
 #### 6.3 Aufbau der Bibliothek
 
 ```
@@ -694,7 +719,10 @@ ausführliche Referenz (englisch):
 
 hypersuite schreibt nichts in die Registry oder nach *Programme*. Die Datenbank
 enthält Namen und Orte Ihrer Dateien, aber keine Inhalte – behandeln Sie sie wie
-ein Inhaltsverzeichnis Ihrer Laufwerke.
+ein Inhaltsverzeichnis Ihrer Laufwerke. Den gelesenen Text Ihrer Dokumente merkt
+sich Planen in `%LOCALAPPDATA%\hyperfiler\plan-cache.db`, damit es nach einem
+Abbruch weitermachen kann; die Datei darf jederzeit gelöscht werden. Nichts davon
+verlässt Ihren Rechner – hypersuite hat keine Netzwerkfunktion (Anhang A).
 
 **Deinstallieren:** `hypersuite.exe` löschen, `%LOCALAPPDATA%\hypersuite\`
 löschen und bei Bedarf Datenbank, Berichte und Bibliothek.
@@ -771,3 +799,98 @@ Contributor Agreement. Details: `CONTRIBUTING.md` und `CONTRIBUTOR-AGREEMENT.md`
 im Ordner `.github` des Projekts.
 
 Projekt: <https://github.com/namshubs/hypersuite>
+
+### Anhang A: Die KI in hypersuite – lokal eingebaut, ohne Verbindung nach außen
+
+**Kurz:** hypersuite enthält keinerlei Netzwerkfunktion. Alles, was das Programm
+von Ihren Dateien liest – Namen, Prüfsummen, Text, OCR-Ergebnisse, KI-Berechnungen –,
+bleibt auf Ihrem Rechner. Es gibt keine Cloud, kein Konto, keine Telemetrie, keine
+Update-Prüfung und keine Absturzberichte.
+
+#### Welche KI
+
+hypersuite nutzt **ein einziges KI-Modell: multilingual-e5-small** (entwickelt von
+Microsoft Research, veröffentlicht als `intfloat/multilingual-e5-small`, MIT-Lizenz),
+in der kompakten int8-Fassung (`Xenova/multilingual-e5-small`, rund 118 MB).
+
+Das ist **kein Chatbot und kein Sprachmodell, das Texte schreibt**. Es ist ein
+sogenanntes Embedding-Modell: Es übersetzt den Anfang eines Dokuments (höchstens
+512 Wortteile) in 384 Zahlen. Dokumente mit ähnlichem Inhalt bekommen ähnliche
+Zahlen. Mehr kann es nicht – es erzeugt keinen Text, beantwortet keine Fragen und
+lernt nicht dazu.
+
+#### Wie sie eingebaut ist
+
+- Die Modelldatei steckt **in `hypersuite.exe`**. Beim ersten Start wird sie
+  zusammen mit den anderen Werkzeugen nach `%LOCALAPPDATA%\hypersuite\runtime\`
+  entpackt und per SHA-256 geprüft.
+- Gerechnet wird mit **tract**, einer Rechenbibliothek, die fest im Programm
+  steckt. Es gibt keinen separaten KI-Dienst, keinen Server im Hintergrund und
+  keine Grafikkarten-Treiber.
+- Verwendet wird das Modell **nur** in Sort → Planen, **nur** wenn unter
+  *Advanced* „KI-Dokumentsortierung“ eingeschaltet ist, **nur** für Dokumente,
+  die die festen Regeln nicht sicher zuordnen, und **nur**, wenn Sie selbst
+  Dokumente beschriftet haben (`labels.jsonl`). Das Modell vergleicht ein
+  unsicheres Dokument dann mit Ihren beschrifteten Beispielen („nächste
+  Nachbarn“). Ohne Ihre Beschriftungen rechnet Planen die KI gar nicht erst.
+- Das Modell wird **nie trainiert und nie verändert** – es lernt nichts. Nach
+  einem Lauf weiß es nichts über Ihre Dokumente; es ist dieselbe Datei wie
+  vorher. Ihre Beschriftungen bleiben in Ihrer eigenen Datei.
+
+Ebenfalls eingebaut und ebenfalls rein lokal: **Tesseract** (Texterkennung in
+gescannten PDFs, sieben Sprachen), **PDFium** (stellt PDF-Seiten für die
+Texterkennung als Bild dar) und **fpcalc** (akustischer Fingerabdruck von
+Musikstücken – nur berechnet und verglichen, keine Abfrage bei einer
+Online-Datenbank).
+
+#### Warum die gelesenen Informationen das Programm nicht verlassen
+
+- **Kein Netzwerk-Code:** hypersuite, hyperindex, hyperfiler und Outbird
+  enthalten keinen Programmteil, der eine Internet- oder Netzwerkverbindung
+  aufbaut – keinen HTTP-Aufruf, keine Sockets. Die Werkzeuge laufen als lokale
+  Prozesse und bekommen nur lokale Dateien übergeben.
+- **Keine versteckten Downloads:** Online-Platzhalter von OneDrive & Co. werden
+  nie geöffnet – sonst würde Windows sie aus der Cloud nachladen.
+- **Netzlaufwerke nur auf Wunsch:** Scan liest ein NAS oder Netzlaufwerk nur,
+  wenn Sie es ausdrücklich einschließen. Das ist Lesen von Dateien in Ihrem
+  eigenen Netz; hypersuite sendet dabei nichts nach außen.
+- **Ein Hinweis zur Ehrlichkeit:** Das mitgelieferte Tesseract-Paket (Windows-Build
+  von UB Mannheim) enthält die Bibliothek `libcurl`, weil Tesseract selbst Bilder
+  auch von einer Webadresse laden *könnte*. hypersuite übergibt Tesseract
+  ausschließlich lokale Bilddateien; diese Fähigkeit wird nie benutzt.
+- **Geprüft (Version 2.2.1):** der Quellcode aller vier Teile; dazu eine Messung
+  während eines Planlaufs mit Texterkennung und KI – 20 beteiligte Prozesse,
+  **null** Netzwerkverbindungen.
+
+#### Wo gelesene Inhalte gespeichert werden
+
+| Datei | Inhalt |
+|---|---|
+| `index.db` (Ihre Datenbank) | Namen, Orte, Größen, Daten und Prüfsummen Ihrer Dateien, die Pläne – keine Dateiinhalte |
+| `%LOCALAPPDATA%\hyperfiler\plan-cache.db` | **der gelesene Text Ihrer Dokumente** (inkl. Texterkennung) und die KI-Zahlen dazu – damit Planen fortsetzen kann |
+| `%LOCALAPPDATA%\hyperfiler\fingerprints.db` | akustische Fingerabdrücke von Musikstücken |
+
+Alle drei liegen nur auf Ihrem Rechner. `plan-cache.db` und `fingerprints.db`
+dürfen Sie jederzeit löschen; Planen liest die Dokumente dann beim nächsten Mal
+neu.
+
+#### Selbst nachprüfen und erzwingen
+
+- **Nachprüfen:** Ressourcenmonitor (`resmon`) → Reiter *Netzwerk*. Während
+  hypersuite läuft, erscheinen weder `hypersuite.exe` noch `tesseract.exe` oder
+  `fpcalc.exe` unter *Netzwerkaktivität* oder *TCP-Verbindungen*.
+- **Erzwingen:** Wer es zusätzlich technisch absichern möchte, sperrt die
+  Programme in der Windows-Firewall für ausgehende Verbindungen (PowerShell als
+  Administrator, Pfad zur Exe anpassen):
+
+```powershell
+New-NetFirewallRule -DisplayName "hypersuite: kein Netz" `
+    -Direction Outbound -Action Block -Program "C:\Pfad\zu\hypersuite.exe"
+Get-ChildItem "$env:LOCALAPPDATA\hypersuite\runtime" -Recurse -Filter *.exe |
+    ForEach-Object {
+        New-NetFirewallRule -DisplayName "hypersuite: kein Netz ($($_.Name))" `
+            -Direction Outbound -Action Block -Program $_.FullName
+    }
+```
+
+hypersuite funktioniert mit diesen Regeln unverändert – es braucht das Netz nicht.

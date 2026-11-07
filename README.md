@@ -12,9 +12,14 @@ to Thunderbird.
 | **Sort** | Copies everything indexed into one ordered library — photos by date and place, music by artist and album, documents by kind, videos by title — in four checked steps: Plan → Review → Apply → Verify. The originals stay where they are. |
 | **Outbird** | Converts Outlook PST files into Thunderbird mail folders, or puts them straight into your Thunderbird profile (backed up first). |
 
-Everything runs on your computer. hypersuite makes no network connections and
-sends nothing anywhere; the document model, OCR (Tesseract, seven languages),
-PDF rendering and music fingerprinting all ship inside the one exe.
+**Your data never leaves your computer.** hypersuite has no network function
+at all — no cloud, no account, no telemetry, no update check. Its AI
+(multilingual-e5-small, a small local embedding model, not a chatbot), OCR
+(Tesseract, seven languages), PDF rendering and music fingerprinting all ship
+inside the one exe and run locally; what they read stays on your disk. Checked
+in the source code and measured during a run: zero network connections. How the
+AI is built in, and how to check or enforce this yourself: appendix A of the
+[user manual](docs/user-manual.md#appendix-a-the-ai-in-hypersuite--built-in-local-no-connection-to-the-outside).
 
 ## What it does to your files
 
